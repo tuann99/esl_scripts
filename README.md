@@ -21,7 +21,6 @@ This document contains instructions for running various scripts for data extract
 - Users may also specify input and output directories with the '-i' and '-o' options respectively.
 - *Instructions:*
 	1. Download the data.
-		a. [Download data off pDR instructions]
 	2. Move the files to 'C:\Users\nguye620\esl_scripts\input'
 	3. Open command prompt, type 'python path\to\pdr_summary_stats_general.py' and then press enter.
 	4. Files will be saved in 'C:\Users\nguye620\esl_scripts\input'
@@ -33,7 +32,7 @@ This document contains instructions for running various scripts for data extract
 	- When using the '-i' and '-o' options, the path may have to have quotation marks in the beginning and end.
 
 **pa_data_processing_cwf.py**
-- 
+- aaa
 
 **pa_data_processing_general.py**
-- 
+- aaa
