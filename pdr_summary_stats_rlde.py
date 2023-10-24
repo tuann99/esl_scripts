@@ -29,7 +29,7 @@
 #
 # Notes:
 #  - Data will be exported to the respective subject folder in the pDR folder.
-#  - If output directory is not specified, then by default the program will output to: "S:\\ExposureScienceLab\\scripts\\output"
+#  - If output directory is not specified, then by default the program will output to: "S:\ExposureScienceLab\Lead Dust\Data\pDR"
 #  - If input directory is not specified, then by default the program will look for files in: 
 #    "S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR\\new_files"
 #  - The script will create folders in the output directory specified for each subject ID.
