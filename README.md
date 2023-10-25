@@ -23,7 +23,7 @@ This document contains instructions for running various scripts for data extract
 	1. Download the data.
 	2. Move the files to 'C:\Users\nguye620\esl_scripts\input'
 	3. Open command prompt, type 'python path\to\pdr_summary_stats_general.py' and then press enter.
-	4. Files will be saved in 'C:\Users\nguye620\esl_scripts\input'
+	4. Files will be saved in 'C:\Users\nguye620\esl_scripts\output'
 - *Example without specific directories:*
 	- python C:\Users\nguye620\esl_scripts\pdr_summary_stats_general.py
 - *Example with specific directories:*

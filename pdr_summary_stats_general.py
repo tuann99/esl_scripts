@@ -124,7 +124,9 @@ def pdr_summary_stats(input_directory, output_directory):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
-    parser.add_argument("-i", "--input_directory", type=str, default="S:\\ExposureScienceLab\\scripts\\input", help="The directory containing the pDR txt files.")
-    parser.add_argument("-o", "--output_directory", type=str, default="S:\\ExposureScienceLab\\scripts\\output", help="The directory to save the output files to.")
+    default_input_directory = os.path.expanduser("~/esl_scripts/input")
+    default_output_directory = os.path.expanduser("~/esl_scripts/output")
+    parser.add_argument("-i", "--input_directory", type=str, default=default_input_directory, help="The directory containing the pDR txt files.")
+    parser.add_argument("-o", "--output_directory", type=str, default=default_output_directory, help="The directory to save the output files to.")
     args = parser.parse_args()
     pdr_summary_stats(args.input_directory, args.output_directory)
