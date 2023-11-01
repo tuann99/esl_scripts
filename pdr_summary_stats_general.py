@@ -118,9 +118,9 @@ def pdr_summary_stats(input_directory, output_directory):
         if file in os.listdir(output_directory):
             if os.path.getsize(output_xlsx_path) > 0:
                 os.remove(file_path)
-                print(f"File {file} deleted from {input_directory}.")
+                print(f"File \"{file}\" deleted from \"{input_directory}.\"")
             else:
-                print(f"File {file} is empty. Please check the file and try again.")
+                print(f"File \"{file}\" is empty. Please check the file and try again.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")

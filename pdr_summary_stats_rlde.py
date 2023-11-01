@@ -145,7 +145,7 @@ def pdr_summary_stats_rlde(input_directory, subject_folder):
         if file in os.listdir(output_folder):
             if os.path.getsize(output_xlsx_path) > 0:
                 os.remove(file_path)
-                print(f"File {file} deleted from {input_directory}.")
+                print(f"File \"{file}\" deleted from \"{input_directory}.\"")
             else:
                 print(f"File {file} is empty. Please check the file and try again.")
 
