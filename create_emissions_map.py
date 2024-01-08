@@ -1,13 +1,37 @@
 #!usr/bin/env python3
 
-########################################################################################################
+##########################################################################################################################################################################################################################################
+##########################################################################################################################################################################################################################################
 # MSU Exposure Science Lab
 # Author: Tuan Nguyen
-# Purpose: Create an interactive map of emissions from xlsx files downkloaded from the EPA's website.
-# Input: Path to the xlsx file containing emissions data, path to directory where you want to save the map
-# Output: Map of emissions as an html file
-# Requirements: Full list available in /venv_requirements/emissions-map-env-requirements.txt
-# Usage: python path/to/create_emissions_map.py -i <input_xlsx_path> -o <output_dir>
+# 
+# Description:
+#   - Create an interactive map of emissions from xlsx files downloaded from the Environmental Protection Agency's (EPA) website. 
+#   - Specifically, the data is from the EPA's National Emissions Inventory (NEI) website (https://www.epa.gov/air-emissions-inventories/2020-national-emissions-inventory-nei-data).
+# 
+# Input:
+#   - Path to the xlsx file containing emissions data
+#   - path to directory where you want to save the map
+#   - Name of the state and county. (e.g. "MI - Kent")
+# 
+# Output:
+#   - Map of emissions as an html file
+# 
+# Requirements: 
+#   - Python libraries: Full list available in /venv_requirements/emissions-map-env-requirements.txt
+#   - Data with the following columns: 'SITE NAME', 'Facility Type', 'Emissions (Tons)', 'Latitude', 'Longitude', 'State-County'
+# 
+# Usage: 
+#   - python path/to/create_emissions_map.py -i <input_xlsx_path> -o <output_dir>
+# 
+# Example:
+#   - (emissions-map-env) C:\Users\nguye620\esl_scripts>python .\create_emissions_map.py -i "C:\Users\nguye620\esl_scripts\input\Kent Facility Data Emissions.xlsx" -o C:\Users\nguye620\esl_scripts\output -c "MI - Kent"
+# 
+# Notes:
+#   - If "Usecols do not match columns, columns expected but not found: ['SITE NAME'] (sheet: 0)" error occurs, 
+# open the xlsx file and ensure the column name for site name has only one space between SITE and NAME (i.e. 'SITE NAME', not 'SITE  NAME')
+##########################################################################################################################################################################################################################################
+##########################################################################################################################################################################################################################################
 
 import pandas as pd
 import folium
@@ -21,18 +45,20 @@ import matplotlib.colors
 COLUMNS = ['SITE NAME', 'Facility Type', 'Emissions (Tons)', 'Latitude', 'Longitude', 'State-County']
 SCALER = MinMaxScaler(feature_range=(500, 5000))
 
-def create_df(xlsx_file):
+def create_df(xlsx_file, county):
     '''
     Description:
         - Creates a dataframe from the xlsx file
     Parameters:
         - xlsx_file: the path to the xlsx file containing emissions data
+        - county: the name of the county
     Returns:
         - df: the dataframe containing emissions data
     '''
     try:
         df = pd.read_excel(xlsx_file, usecols=COLUMNS)
-        df = df[df['State-County'] == 'MI - Genesee']
+        # df = df[df['State-County'] == 'MI - Genesee']
+        df = df[df['State-County'] == str(county)]
         df = df.drop(columns=['State-County'])
         df['Scaled Emissions'] = SCALER.fit_transform(df[['Emissions (Tons)']])
         print("Dataframe created")
@@ -155,13 +181,14 @@ def main():
         parser = argparse.ArgumentParser(description='Create a map of emissions')
         parser.add_argument('-i', '--input_xlsx_path', type=str, help='Path to the xlsx file containing emissions data')
         parser.add_argument('-o', '--output_dir', type=str, help='Path to directory where you want to save the map')
+        parser.add_argument('-c', '--county', type=str, help='Name of the county')
         args = parser.parse_args()
     except Exception as e:
         print(e)
         return None
 
     try:
-        df = create_df(args.input_xlsx_path)
+        df = create_df(args.input_xlsx_path, args.county)
         map = create_map(df)
         output_path = os.path.join(args.output_dir, 'map.html')
         map.save(output_path)
