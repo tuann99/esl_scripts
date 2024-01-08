@@ -7,12 +7,12 @@
 # 
 # Description:
 #   - Create an interactive map of emissions from xlsx files downloaded from the Environmental Protection Agency's (EPA) website. 
-#   - Specifically, the data is from the EPA's National Emissions Inventory (NEI) website (https://www.epa.gov/air-emissions-inventories/2020-national-emissions-inventory-nei-data).
+#   - Specifically, the data is from the EPA's National Emissions Inventory (NEI) data retrieval tool (https://www.epa.gov/air-emissions-inventories/2020-national-emissions-inventory-nei-data).
 # 
 # Input:
 #   - Path to the xlsx file containing emissions data
 #   - path to directory where you want to save the map
-#   - Name of the state and county. (e.g. "MI - Kent")
+#   - Name of the state and county. (e.g. "MI - Kent", "AL - Jefferson", etc.")
 # 
 # Output:
 #   - Map of emissions as an html file
