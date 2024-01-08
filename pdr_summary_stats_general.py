@@ -58,10 +58,45 @@ pdr_num_dict = {
 
 # functions
 def append_rows_to_sheet(sheet, df):
+    '''
+    Description:
+        - This function appends the rows from a dataframe to a sheet.
+    Parameters:
+        - sheet: the sheet to append the rows to
+        - df: the dataframe containing the rows to append
+    Returns:
+        - None
+    '''
     for row in df.itertuples(index=False):
         sheet.append(row)
 
+def count_header_rows(file_path, marker):
+    '''
+    Description:
+        - This function counts the number of rows to skip in a file.
+    Parameters:
+        - file_path: the path to the file
+        - marker: the string to look for in the file
+    Returns:
+        - The number of rows to skip.
+    '''
+    with open(file_path, 'r') as f:
+        for i, line in enumerate(f):
+            if marker in line:
+                return i + 1
+    return None
+
 def create_chart(data_sheet_name, tmp_df, summary_sheet_name):
+    '''
+    Description:
+        - This function creates a chart on the summary sheet.
+    Parameters:
+        - data_sheet_name: the name of the sheet containing the data
+        - tmp_df: the dataframe containing the data
+        - summary_sheet_name: the name of the summary sheet
+    Returns:
+        - None
+    '''
     try:
         chart = LineChart()
         chart.title = "ug/m3 Over Time"
@@ -76,11 +111,31 @@ def create_chart(data_sheet_name, tmp_df, summary_sheet_name):
         print(e)
 
 def create_sheet_with_headers(workbook_name, title, headers):
+    '''
+    Description:
+        - This function creates a sheet with headers.
+    Parameters:
+        - workbook_name: the name of the workbook
+        - title: the title of the sheet
+        - headers: the headers for the sheet
+    Returns:
+        - The sheet.
+    '''
     sheet = workbook_name.create_sheet(title=title)
     sheet.append(headers)
     return sheet
 
 def create_summary_sheet(workbook_name, title, summary_stats_var_name):
+    '''
+    Description:
+        - This function creates a sheet with summary statistics.
+    Parameters:
+        - workbook_name: the name of the workbook
+        - title: the title of the sheet
+        - summary_stats_var_name: the summary statistics
+    Returns:
+        - The sheet.
+    '''
     sheet = workbook_name.create_sheet(title=title)
     summary_stats_list = summary_stats_var_name.reset_index().values.tolist()
     for row in summary_stats_list:
@@ -88,6 +143,18 @@ def create_summary_sheet(workbook_name, title, summary_stats_var_name):
     return sheet
 
 def pdr_summary_stats(input_directory, output_directory):
+    '''
+    Description:
+        - This function extracts data from the pDR txt files, calculates summary statistics,
+            and then creates an excel (.xlsx) file with the data, summary stats, and chart.
+        - The function will also remove outliers using the IQR method and the z-score method, and
+            create a new sheet with the data, summary stats, and chart for each method.
+    Parameters:
+        - input_directory: the directory containing the pDR txt files
+        - output_directory: the directory to save the output files to
+    Returns:
+        - None
+    '''
     for file in os.listdir(input_directory):
         
         if file.endswith(".txt"):
@@ -113,12 +180,20 @@ def pdr_summary_stats(input_directory, output_directory):
                 lines = z.readlines()
                 for line in lines: # parse file for serial number by looking for string after "Serial no.  "
                     if "Serial no." in line: # if serial number is found, then go ahead with data extraction
+                        info_row_count = count_header_rows(output_txt_path, 'record')
+                        print(f"Number of rows to skip: {info_row_count}.")
                         serial_num = line.split("Serial no.  \", ")[1].strip().replace('"', '')
-                        tmp = pd.read_csv(file_path, sep=",", skiprows=24, header=None, names=custom_headers)
-                        tmp["pdr name"] = pdr_num_dict[serial_num]  # add column for pdr name
-                        tmp["time"] = tmp["time"].str.strip()  # Remove leading and trailing whitespace
-                        tmp["date"] = tmp["date"].str.strip()
-                        summary_stats = tmp["ug/m3"].describe() # summary statistics
+                        tmp = pd.read_csv(file_path, sep=",", skiprows=info_row_count, header=None, names=custom_headers)
+                        tmp["pdr name"] = pdr_num_dict[serial_num]
+                        
+                        # remove leading and trailing whitespace from all columns
+                        for col in tmp.columns:  
+                            if tmp[col].dtype == object:
+                                tmp[col] = tmp[col].str.strip()
+
+                        # convert to numeric then calculate summary statistics
+                        tmp["ug/m3"] = pd.to_numeric(tmp["ug/m3"], errors='coerce')
+                        summary_stats = tmp["ug/m3"].describe()
 
                         # remove outliers using IQR method and save removed outliers to new dataframe
                         q1 = tmp["ug/m3"].quantile(0.25)
