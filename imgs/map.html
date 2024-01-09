@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_e71ffe2d3493e245170798dc37b3f0ec {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_e71ffe2d3493e245170798dc37b3f0ec" ></div>
+        
+    
+        <div style="
+            padding: 15px;
+            position: fixed; 
+            top: 5vh;
+            left: 5vw;
+            width: auto;
+            height: auto;
+            max-width: 30vw;
+            max-height: 40vh;
+            overflow: auto;
+            z-index:9999;
+            font-size:14px;
+            background-color: #ffffff;
+            ">
+            <button onclick="toggleTable()">Show Top 5 Emissions Sites</button>
+            <div id="tableDiv" style="display: none;">
+                
+        <table style="width:100%">
+            <tr>
+                <th>Site Name</th>
+                <th>Emissions (tons)</th>
+            </tr>
+        <tr><td>BETZ INDUSTRIES INC</td><td>43.588367</td></tr><tr><td>PACKAGING CORPORATION OF AMERICA</td><td>12.2046</td></tr><tr><td>RIETH-RILEY CONSTRUCTION CO., INC.</td><td>10.816815</td></tr><tr><td>South Kent Landfill</td><td>9.9096585</td></tr><tr><td>ADA COGENERATION LLC</td><td>8.27</td></tr></table>
+            </div>
+            <hr style="border: 0.3px solid #808080;">
+            <p><a style="color:#808080;font-size:150%;">Facility Type</a></p>
+            <hr style="border: 0.3px solid #808080;">
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db5f57;"></i> Unspecified</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db9757;"></i> Plastic, Resin, Rubber or Syn Fiber Manuf Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#dbd057;"></i> Foundries, Iron and Steel</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#addb57;"></i> Bakeries</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#75db57;"></i> Printing/Publishing Facility</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#57db72;"></i> Airport</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#57dbaa;"></i> Automobile/Truck or Parts Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#57d3db;"></i> Institutional (school, hospital, prison, etc.)</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#579bdb;"></i> Municipal Waste Combustor</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#5762db;"></i> Hot Mix Asphalt Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#8557db;"></i> Concrete Block, Pipe or Other Manuf</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#bd57db;"></i> Industrial Machinery or Equipment Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db57c0;"></i> Landfill</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db5788;"></i> Steam/Heating Facility</p>
+            
+        </div>
+        <script>
+        function toggleTable() {
+            var x = document.getElementById("tableDiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        </script>
+        
+</body>
+<script>
+    
+    
+            var map_e71ffe2d3493e245170798dc37b3f0ec = L.map(
+                "map_e71ffe2d3493e245170798dc37b3f0ec",
+                {
+                    center: [42.95539681578947, -85.63956707894735],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 11,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_adcd9a620c3b75ce9dc56629d26e080c = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_adcd9a620c3b75ce9dc56629d26e080c.addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+            var circle_10ab4ddc3b33eb063639c85e462eee79 = L.circle(
+                [42.9596, -85.4906],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 577.0099400251452, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_3ff6615cdafaa28fec705569b699541f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c64f557fa75e6dade6ef4a4ad517e346 = $(`<div id="html_c64f557fa75e6dade6ef4a4ad517e346" style="width: 100.0%; height: 100.0%;">ACCESS BUSINESS GROUP, LLC, 0.746531405 tons</div>`)[0];
+                popup_3ff6615cdafaa28fec705569b699541f.setContent(html_c64f557fa75e6dade6ef4a4ad517e346);
+            
+        
+
+        circle_10ab4ddc3b33eb063639c85e462eee79.bindPopup(popup_3ff6615cdafaa28fec705569b699541f)
+        ;
+
+        
+    
+    
+            circle_10ab4ddc3b33eb063639c85e462eee79.bindTooltip(
+                `<div>
+                     ACCESS BUSINESS GROUP, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c91c7373d4e1b3608f9af5f15548e1c5 = L.circle(
+                [42.9627, -85.4942],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1353.7326539347612, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_3fc814733b0e23d16106aab1d408a557 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6e104f3de695ce6b2171264e47f91546 = $(`<div id="html_6e104f3de695ce6b2171264e47f91546" style="width: 100.0%; height: 100.0%;">ADA COGENERATION LLC, 8.27 tons</div>`)[0];
+                popup_3fc814733b0e23d16106aab1d408a557.setContent(html_6e104f3de695ce6b2171264e47f91546);
+            
+        
+
+        circle_c91c7373d4e1b3608f9af5f15548e1c5.bindPopup(popup_3fc814733b0e23d16106aab1d408a557)
+        ;
+
+        
+    
+    
+            circle_c91c7373d4e1b3608f9af5f15548e1c5.bindTooltip(
+                `<div>
+                     ADA COGENERATION LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eb143194595a210ffcdfcb754ee1beec = L.circle(
+                [42.9378, -85.6761],
+                {"bubblingMouseEvents": true, "color": "#db9757", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db9757", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 873.0566193033013, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_6ce989f1280dd6fd259a255547f9307e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a0e13bcf3f80d4e37ea5bced0ceea06f = $(`<div id="html_a0e13bcf3f80d4e37ea5bced0ceea06f" style="width: 100.0%; height: 100.0%;">Arkema, Inc., 3.61409 tons</div>`)[0];
+                popup_6ce989f1280dd6fd259a255547f9307e.setContent(html_a0e13bcf3f80d4e37ea5bced0ceea06f);
+            
+        
+
+        circle_eb143194595a210ffcdfcb754ee1beec.bindPopup(popup_6ce989f1280dd6fd259a255547f9307e)
+        ;
+
+        
+    
+    
+            circle_eb143194595a210ffcdfcb754ee1beec.bindTooltip(
+                `<div>
+                     Arkema, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6035c942039284552e1060ea709e1426 = L.circle(
+                [42.8786, -85.6767],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 510.0039536322198, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9162fd034362492d29a4ef4b869c3555 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ba91fb65fe3d1c9c9e19151b3391fe1b = $(`<div id="html_ba91fb65fe3d1c9c9e19151b3391fe1b" style="width: 100.0%; height: 100.0%;">ARVRON INC, 0.0975 tons</div>`)[0];
+                popup_9162fd034362492d29a4ef4b869c3555.setContent(html_ba91fb65fe3d1c9c9e19151b3391fe1b);
+            
+        
+
+        circle_6035c942039284552e1060ea709e1426.bindPopup(popup_9162fd034362492d29a4ef4b869c3555)
+        ;
+
+        
+    
+    
+            circle_6035c942039284552e1060ea709e1426.bindTooltip(
+                `<div>
+                     ARVRON INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_61e9da6717b01e5dfc75c6dd4409f530 = L.circle(
+                [42.8155, -85.7208],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 563.4369386254634, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_76f7cb835567fab883d019cf7c7d23b7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_281d2cf9f59c594aacbdf76b44f28a8a = $(`<div id="html_281d2cf9f59c594aacbdf76b44f28a8a" style="width: 100.0%; height: 100.0%;">Atlas EPS, a Division of Atlas Roofing Corp., 0.615061 tons</div>`)[0];
+                popup_76f7cb835567fab883d019cf7c7d23b7.setContent(html_281d2cf9f59c594aacbdf76b44f28a8a);
+            
+        
+
+        circle_61e9da6717b01e5dfc75c6dd4409f530.bindPopup(popup_76f7cb835567fab883d019cf7c7d23b7)
+        ;
+
+        
+    
+    
+            circle_61e9da6717b01e5dfc75c6dd4409f530.bindTooltip(
+                `<div>
+                     Atlas EPS, a Division of Atlas Roofing Corp.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_92d60e7921b23570c990296425c8e054 = L.circle(
+                [42.8967, -85.6589],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 502.1179474507148, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_0260672b49b6cc2d2f0a2b5f58b6da03 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_db0e690a843a722b7c37f84b54f98e6c = $(`<div id="html_db0e690a843a722b7c37f84b54f98e6c" style="width: 100.0%; height: 100.0%;">BENTELER AUTOMOTIVE INCORPORATED, 0.0211148 tons</div>`)[0];
+                popup_0260672b49b6cc2d2f0a2b5f58b6da03.setContent(html_db0e690a843a722b7c37f84b54f98e6c);
+            
+        
+
+        circle_92d60e7921b23570c990296425c8e054.bindPopup(popup_0260672b49b6cc2d2f0a2b5f58b6da03)
+        ;
+
+        
+    
+    
+            circle_92d60e7921b23570c990296425c8e054.bindTooltip(
+                `<div>
+                     BENTELER AUTOMOTIVE INCORPORATED
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_416dbcfbf627a50b4e6e9854307ab85e = L.circle(
+                [43.0026, -85.7081],
+                {"bubblingMouseEvents": true, "color": "#dbd057", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dbd057", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000.0, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_974e61aa9af5f89b18bff2287c6280e6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a6e9034fcb0020bf0f4eb1cef7bf7c47 = $(`<div id="html_a6e9034fcb0020bf0f4eb1cef7bf7c47" style="width: 100.0%; height: 100.0%;">BETZ INDUSTRIES INC, 43.588367 tons</div>`)[0];
+                popup_974e61aa9af5f89b18bff2287c6280e6.setContent(html_a6e9034fcb0020bf0f4eb1cef7bf7c47);
+            
+        
+
+        circle_416dbcfbf627a50b4e6e9854307ab85e.bindPopup(popup_974e61aa9af5f89b18bff2287c6280e6)
+        ;
+
+        
+    
+    
+            circle_416dbcfbf627a50b4e6e9854307ab85e.bindTooltip(
+                `<div>
+                     BETZ INDUSTRIES INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_59c9b39524759718197979904f596f61 = L.circle(
+                [42.9102, -85.6586],
+                {"bubblingMouseEvents": true, "color": "#addb57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#addb57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 597.7075517541424, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_03fb07badae0b375ef15bcd7529bcb41 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ffe8b7123e5ad03f4fad92f0693fb55a = $(`<div id="html_ffe8b7123e5ad03f4fad92f0693fb55a" style="width: 100.0%; height: 100.0%;">BIMBO BAKERIES USA, INC., 0.947012 tons</div>`)[0];
+                popup_03fb07badae0b375ef15bcd7529bcb41.setContent(html_ffe8b7123e5ad03f4fad92f0693fb55a);
+            
+        
+
+        circle_59c9b39524759718197979904f596f61.bindPopup(popup_03fb07badae0b375ef15bcd7529bcb41)
+        ;
+
+        
+    
+    
+            circle_59c9b39524759718197979904f596f61.bindTooltip(
+                `<div>
+                     BIMBO BAKERIES USA, INC.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a3dd0b83b4289c2331ce40a3c82f81cc = L.circle(
+                [43.0227, -85.7868],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1273.2188941911156, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_4ad0566807ae6ff32e2f9b2e42889b88 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_26a9f667261221bc9079f6ce121f14d7 = $(`<div id="html_26a9f667261221bc9079f6ce121f14d7" style="width: 100.0%; height: 100.0%;">Cintas Corporation, 7.49013 tons</div>`)[0];
+                popup_4ad0566807ae6ff32e2f9b2e42889b88.setContent(html_26a9f667261221bc9079f6ce121f14d7);
+            
+        
+
+        circle_a3dd0b83b4289c2331ce40a3c82f81cc.bindPopup(popup_4ad0566807ae6ff32e2f9b2e42889b88)
+        ;
+
+        
+    
+    
+            circle_a3dd0b83b4289c2331ce40a3c82f81cc.bindTooltip(
+                `<div>
+                     Cintas Corporation
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0a2ca99882d3c4210537378d4e4c4633 = L.circle(
+                [42.9941, -85.6827],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.6679626419036, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_814a46f1513616f8991759845c522534 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cdf3aef11278f040c603bb12e1a44d49 = $(`<div id="html_cdf3aef11278f040c603bb12e1a44d49" style="width: 100.0%; height: 100.0%;">Comfort Research, 0.00707 tons</div>`)[0];
+                popup_814a46f1513616f8991759845c522534.setContent(html_cdf3aef11278f040c603bb12e1a44d49);
+            
+        
+
+        circle_0a2ca99882d3c4210537378d4e4c4633.bindPopup(popup_814a46f1513616f8991759845c522534)
+        ;
+
+        
+    
+    
+            circle_0a2ca99882d3c4210537378d4e4c4633.bindTooltip(
+                `<div>
+                     Comfort Research
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_47d1525d89921dc2a43c9efe96c29223 = L.circle(
+                [42.8901, -85.6766],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 501.7241695359159, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_1ef4966bc309953356f5438fbc457657 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5abd95ba62be9934ccc97daad70bb0b2 = $(`<div id="html_5abd95ba62be9934ccc97daad70bb0b2" style="width: 100.0%; height: 100.0%;">Consumers Energy - Grand Rapids Service Center, 0.0173006 tons</div>`)[0];
+                popup_1ef4966bc309953356f5438fbc457657.setContent(html_5abd95ba62be9934ccc97daad70bb0b2);
+            
+        
+
+        circle_47d1525d89921dc2a43c9efe96c29223.bindPopup(popup_1ef4966bc309953356f5438fbc457657)
+        ;
+
+        
+    
+    
+            circle_47d1525d89921dc2a43c9efe96c29223.bindTooltip(
+                `<div>
+                     Consumers Energy - Grand Rapids Service Center
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_aacc9a0af6394f0289db33ed21bb083a = L.circle(
+                [43.156, -85.707],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 502.81971086061833, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_70bc5058daf0cc77527b48115f93ef2f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_dc9bab826e75a4e95df97f4916817fb3 = $(`<div id="html_dc9bab826e75a4e95df97f4916817fb3" style="width: 100.0%; height: 100.0%;">CONTINENTAL IDENTIFICATION PRODUCTS, 0.0279122 tons</div>`)[0];
+                popup_70bc5058daf0cc77527b48115f93ef2f.setContent(html_dc9bab826e75a4e95df97f4916817fb3);
+            
+        
+
+        circle_aacc9a0af6394f0289db33ed21bb083a.bindPopup(popup_70bc5058daf0cc77527b48115f93ef2f)
+        ;
+
+        
+    
+    
+            circle_aacc9a0af6394f0289db33ed21bb083a.bindTooltip(
+                `<div>
+                     CONTINENTAL IDENTIFICATION PRODUCTS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_47a7a4bdb53b70f530cd34ffc9a30635 = L.circle(
+                [42.9044, -85.5329],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 547.5110367548766, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_d1da5bbbd202de7ae1d2c603532f7568 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_882717bb781127e7a5c91a1e574c9e8f = $(`<div id="html_882717bb781127e7a5c91a1e574c9e8f" style="width: 100.0%; height: 100.0%;">DAVIDSON PLYFORMS INC, 0.4608 tons</div>`)[0];
+                popup_d1da5bbbd202de7ae1d2c603532f7568.setContent(html_882717bb781127e7a5c91a1e574c9e8f);
+            
+        
+
+        circle_47a7a4bdb53b70f530cd34ffc9a30635.bindPopup(popup_d1da5bbbd202de7ae1d2c603532f7568)
+        ;
+
+        
+    
+    
+            circle_47a7a4bdb53b70f530cd34ffc9a30635.bindTooltip(
+                `<div>
+                     DAVIDSON PLYFORMS INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_3efaa04147718ffd74440b046b981e87 = L.circle(
+                [42.9392, -85.6742],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.69893463457305, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_13ce9a4f68073f55de8d976ea0fcb0fa = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_13a65766780b53cf1414e6f0b90ec652 = $(`<div id="html_13a65766780b53cf1414e6f0b90ec652" style="width: 100.0%; height: 100.0%;">DECC CO INC, 0.00737 tons</div>`)[0];
+                popup_13ce9a4f68073f55de8d976ea0fcb0fa.setContent(html_13a65766780b53cf1414e6f0b90ec652);
+            
+        
+
+        circle_3efaa04147718ffd74440b046b981e87.bindPopup(popup_13ce9a4f68073f55de8d976ea0fcb0fa)
+        ;
+
+        
+    
+    
+            circle_3efaa04147718ffd74440b046b981e87.bindTooltip(
+                `<div>
+                     DECC CO INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_99191ee4de2107513a8b6681ff1fb6f7 = L.circle(
+                [43.0166, -85.7527],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.7717833423309, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_405cab95a79b704031b3b17360b89cfb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_99467871e5dbdad5e8b78b160f445b66 = $(`<div id="html_99467871e5dbdad5e8b78b160f445b66" style="width: 100.0%; height: 100.0%;">EXPERT COATING CO INC., 0.008075625 tons</div>`)[0];
+                popup_405cab95a79b704031b3b17360b89cfb.setContent(html_99467871e5dbdad5e8b78b160f445b66);
+            
+        
+
+        circle_99191ee4de2107513a8b6681ff1fb6f7.bindPopup(popup_405cab95a79b704031b3b17360b89cfb)
+        ;
+
+        
+    
+    
+            circle_99191ee4de2107513a8b6681ff1fb6f7.bindTooltip(
+                `<div>
+                     EXPERT COATING CO INC.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2932eca520d77858211060a1dd392c66 = L.circle(
+                [43.155919, -85.703903],
+                {"bubblingMouseEvents": true, "color": "#dbd057", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dbd057", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 968.8811771431191, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_feb914b42fd52077658a4e2630976483 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_56849ce36b8515661236a405fba6a52b = $(`<div id="html_56849ce36b8515661236a405fba6a52b" style="width: 100.0%; height: 100.0%;">Federal-Mogul Powertrain Systems, 4.542263 tons</div>`)[0];
+                popup_feb914b42fd52077658a4e2630976483.setContent(html_56849ce36b8515661236a405fba6a52b);
+            
+        
+
+        circle_2932eca520d77858211060a1dd392c66.bindPopup(popup_feb914b42fd52077658a4e2630976483)
+        ;
+
+        
+    
+    
+            circle_2932eca520d77858211060a1dd392c66.bindTooltip(
+                `<div>
+                     Federal-Mogul Powertrain Systems
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_650e8171848da84002a826009d17bbec = L.circle(
+                [43.1549, -85.7066],
+                {"bubblingMouseEvents": true, "color": "#75db57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#75db57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 517.703880081767, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_2cfc607d6bdb4bc4cd2f1106de8e49d8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4d4fac3899e2b102db1011aa402be237 = $(`<div id="html_4d4fac3899e2b102db1011aa402be237" style="width: 100.0%; height: 100.0%;">General Formulations, Inc., 0.1720828 tons</div>`)[0];
+                popup_2cfc607d6bdb4bc4cd2f1106de8e49d8.setContent(html_4d4fac3899e2b102db1011aa402be237);
+            
+        
+
+        circle_650e8171848da84002a826009d17bbec.bindPopup(popup_2cfc607d6bdb4bc4cd2f1106de8e49d8)
+        ;
+
+        
+    
+    
+            circle_650e8171848da84002a826009d17bbec.bindTooltip(
+                `<div>
+                     General Formulations, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e186363b9f732d1da7a250566b30eb38 = L.circle(
+                [42.8808, -85.5351],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 810.1565904947597, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_acdd3b96faca379213d114c397a27080 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4335739372470eb94235c3c9a6bebac0 = $(`<div id="html_4335739372470eb94235c3c9a6bebac0" style="width: 100.0%; height: 100.0%;">Gerald R. Ford International, 3.0048296 tons</div>`)[0];
+                popup_acdd3b96faca379213d114c397a27080.setContent(html_4335739372470eb94235c3c9a6bebac0);
+            
+        
+
+        circle_e186363b9f732d1da7a250566b30eb38.bindPopup(popup_acdd3b96faca379213d114c397a27080)
+        ;
+
+        
+    
+    
+            circle_e186363b9f732d1da7a250566b30eb38.bindTooltip(
+                `<div>
+                     Gerald R. Ford International
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0edce70497f9b2b5e29eba1414ec830e = L.circle(
+                [42.9158, -85.6744],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 501.6645690980224, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_c871555708f8d723466142f86eb179c4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0328c9fa6ec28c12048b4596f6776257 = $(`<div id="html_0328c9fa6ec28c12048b4596f6776257" style="width: 100.0%; height: 100.0%;">Gilmore Inc., 0.0167233 tons</div>`)[0];
+                popup_c871555708f8d723466142f86eb179c4.setContent(html_0328c9fa6ec28c12048b4596f6776257);
+            
+        
+
+        circle_0edce70497f9b2b5e29eba1414ec830e.bindPopup(popup_c871555708f8d723466142f86eb179c4)
+        ;
+
+        
+    
+    
+            circle_0edce70497f9b2b5e29eba1414ec830e.bindTooltip(
+                `<div>
+                     Gilmore Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f314816b21408468c7d2b0f259e60c0d = L.circle(
+                [42.9264, -85.7038],
+                {"bubblingMouseEvents": true, "color": "#57dbaa", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57dbaa", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 603.2296515671472, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_96d7785ee2a359d967bc70114becb2b1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6f037c89542d172a32162c601d877681 = $(`<div id="html_6f037c89542d172a32162c601d877681" style="width: 100.0%; height: 100.0%;">GM Components Holdings, LLC, 1.0005 tons</div>`)[0];
+                popup_96d7785ee2a359d967bc70114becb2b1.setContent(html_6f037c89542d172a32162c601d877681);
+            
+        
+
+        circle_f314816b21408468c7d2b0f259e60c0d.bindPopup(popup_96d7785ee2a359d967bc70114becb2b1)
+        ;
+
+        
+    
+    
+            circle_f314816b21408468c7d2b0f259e60c0d.bindTooltip(
+                `<div>
+                     GM Components Holdings, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_cac436e462c62cd953bca7a528ac8237 = L.circle(
+                [42.9486, -85.7028],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.2849423325586, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_25539b8f9eacab7894d7cf62a4299039 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_28aec696172542fc8c579393075b63dd = $(`<div id="html_28aec696172542fc8c579393075b63dd" style="width: 100.0%; height: 100.0%;">GRAND RAPIDS WASTEWATER TREATMENT PLANT, 0.00336 tons</div>`)[0];
+                popup_25539b8f9eacab7894d7cf62a4299039.setContent(html_28aec696172542fc8c579393075b63dd);
+            
+        
+
+        circle_cac436e462c62cd953bca7a528ac8237.bindPopup(popup_25539b8f9eacab7894d7cf62a4299039)
+        ;
+
+        
+    
+    
+            circle_cac436e462c62cd953bca7a528ac8237.bindTooltip(
+                `<div>
+                     GRAND RAPIDS WASTEWATER TREATMENT PLANT
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_517df2c8f99448402c067edaa45ec1cb = L.circle(
+                [42.879216, -85.744718],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 515.8421742504038, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_ef3ad6343c06cdce40c4b666f6d4bb5a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9161319fc38f3870b4eaeb6979360c49 = $(`<div id="html_9161319fc38f3870b4eaeb6979360c49" style="width: 100.0%; height: 100.0%;">GRANDVILLE PRINTING COMPANY, 0.15405 tons</div>`)[0];
+                popup_ef3ad6343c06cdce40c4b666f6d4bb5a.setContent(html_9161319fc38f3870b4eaeb6979360c49);
+            
+        
+
+        circle_517df2c8f99448402c067edaa45ec1cb.bindPopup(popup_ef3ad6343c06cdce40c4b666f6d4bb5a)
+        ;
+
+        
+    
+    
+            circle_517df2c8f99448402c067edaa45ec1cb.bindTooltip(
+                `<div>
+                     GRANDVILLE PRINTING COMPANY
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8aac4e3f4a706222006a627f462c3d9f = L.circle(
+                [43.0149, -85.7688],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 594.7037846650874, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_af29c32022a4f0f636b0eaafed3485ee = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e00370a85b979b257c5d9649037943a6 = $(`<div id="html_e00370a85b979b257c5d9649037943a6" style="width: 100.0%; height: 100.0%;">H.B. Fuller Co., 0.917917 tons</div>`)[0];
+                popup_af29c32022a4f0f636b0eaafed3485ee.setContent(html_e00370a85b979b257c5d9649037943a6);
+            
+        
+
+        circle_8aac4e3f4a706222006a627f462c3d9f.bindPopup(popup_af29c32022a4f0f636b0eaafed3485ee)
+        ;
+
+        
+    
+    
+            circle_8aac4e3f4a706222006a627f462c3d9f.bindTooltip(
+                `<div>
+                     H.B. Fuller Co.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5c2af8d5bded99b2f894e2404ab049cf = L.circle(
+                [42.9961, -85.6797],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 535.1583736785599, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_6af9321d3bc6e5b008256d4ae325bb93 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_06e2e33e2f40a5222403cd46c5bb1fef = $(`<div id="html_06e2e33e2f40a5222403cd46c5bb1fef" style="width: 100.0%; height: 100.0%;">HAVILAND ENTERPRISES, INC, 0.34115 tons</div>`)[0];
+                popup_6af9321d3bc6e5b008256d4ae325bb93.setContent(html_06e2e33e2f40a5222403cd46c5bb1fef);
+            
+        
+
+        circle_5c2af8d5bded99b2f894e2404ab049cf.bindPopup(popup_6af9321d3bc6e5b008256d4ae325bb93)
+        ;
+
+        
+    
+    
+            circle_5c2af8d5bded99b2f894e2404ab049cf.bindTooltip(
+                `<div>
+                     HAVILAND ENTERPRISES, INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_d62fea81127f3c33b4b133dceff6fc14 = L.circle(
+                [42.9748, -85.602],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 509.1728718289239, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_40122e2bcd475abec64b1b205c350924 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_62e4a02ab8d8e3349ca63823f58c7663 = $(`<div id="html_62e4a02ab8d8e3349ca63823f58c7663" style="width: 100.0%; height: 100.0%;">HEARTHSIDE FOOD SOLUTIONS, 0.08945 tons</div>`)[0];
+                popup_40122e2bcd475abec64b1b205c350924.setContent(html_62e4a02ab8d8e3349ca63823f58c7663);
+            
+        
+
+        circle_d62fea81127f3c33b4b133dceff6fc14.bindPopup(popup_40122e2bcd475abec64b1b205c350924)
+        ;
+
+        
+    
+    
+            circle_d62fea81127f3c33b4b133dceff6fc14.bindTooltip(
+                `<div>
+                     HEARTHSIDE FOOD SOLUTIONS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_4c9d7e636fdb35a734c93289588bb78b = L.circle(
+                [42.9076, -85.5883],
+                {"bubblingMouseEvents": true, "color": "#addb57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#addb57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 503.8911146790337, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_1766351d4de745103f3d7aa988a4a298 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1d8a622cdb292be6316ac0601a3e5b78 = $(`<div id="html_1d8a622cdb292be6316ac0601a3e5b78" style="width: 100.0%; height: 100.0%;">Hearthside Food Solutions LLC, 0.03829 tons</div>`)[0];
+                popup_1766351d4de745103f3d7aa988a4a298.setContent(html_1d8a622cdb292be6316ac0601a3e5b78);
+            
+        
+
+        circle_4c9d7e636fdb35a734c93289588bb78b.bindPopup(popup_1766351d4de745103f3d7aa988a4a298)
+        ;
+
+        
+    
+    
+            circle_4c9d7e636fdb35a734c93289588bb78b.bindTooltip(
+                `<div>
+                     Hearthside Food Solutions LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0d80c9097da0ed99d778d6b607409282 = L.circle(
+                [42.9726, -85.6395],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 720.395827457736, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_4be9597e2823bc2aabc8082bf774cb22 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3a32ae5fe33d1651d30252a2a6c9f0fb = $(`<div id="html_3a32ae5fe33d1651d30252a2a6c9f0fb" style="width: 100.0%; height: 100.0%;">Hutchinson Antivibration Systems, Inc., 2.13539155 tons</div>`)[0];
+                popup_4be9597e2823bc2aabc8082bf774cb22.setContent(html_3a32ae5fe33d1651d30252a2a6c9f0fb);
+            
+        
+
+        circle_0d80c9097da0ed99d778d6b607409282.bindPopup(popup_4be9597e2823bc2aabc8082bf774cb22)
+        ;
+
+        
+    
+    
+            circle_0d80c9097da0ed99d778d6b607409282.bindTooltip(
+                `<div>
+                     Hutchinson Antivibration Systems, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e43dde3f1eb9c10d5a1802bd1afb6353 = L.circle(
+                [42.8863, -85.6751],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 907.1767911395874, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_357ae40a680ea9d2bbe1fec5915d69ae = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cc7e779bf04cd93faf3ffa9ddb116854 = $(`<div id="html_cc7e779bf04cd93faf3ffa9ddb116854" style="width: 100.0%; height: 100.0%;">Industrial Container Services - MI, LLC, 3.9445838 tons</div>`)[0];
+                popup_357ae40a680ea9d2bbe1fec5915d69ae.setContent(html_cc7e779bf04cd93faf3ffa9ddb116854);
+            
+        
+
+        circle_e43dde3f1eb9c10d5a1802bd1afb6353.bindPopup(popup_357ae40a680ea9d2bbe1fec5915d69ae)
+        ;
+
+        
+    
+    
+            circle_e43dde3f1eb9c10d5a1802bd1afb6353.bindTooltip(
+                `<div>
+                     Industrial Container Services - MI, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_2f8aba51a917786856b8502485304d63 = L.circle(
+                [42.8888, -85.6516],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 714.276634084054, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_020769b2e2993c3043ad852f2274fe2c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fede08343f8766168643e5724427cf7b = $(`<div id="html_fede08343f8766168643e5724427cf7b" style="width: 100.0%; height: 100.0%;">JELD-WEN Interior Door - Grand Rapids, 2.07612 tons</div>`)[0];
+                popup_020769b2e2993c3043ad852f2274fe2c.setContent(html_fede08343f8766168643e5724427cf7b);
+            
+        
+
+        circle_2f8aba51a917786856b8502485304d63.bindPopup(popup_020769b2e2993c3043ad852f2274fe2c)
+        ;
+
+        
+    
+    
+            circle_2f8aba51a917786856b8502485304d63.bindTooltip(
+                `<div>
+                     JELD-WEN Interior Door - Grand Rapids
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_346dd710ff602ef31c5a9b56a059f044 = L.circle(
+                [42.8972, -85.5419],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 523.7492259009276, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_3117c26af3d5d7849a33f66caeb23fc4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_baff590eaff7c249dd9e897c5d5387ca = $(`<div id="html_baff590eaff7c249dd9e897c5d5387ca" style="width: 100.0%; height: 100.0%;">Kawasaki Motors Corp USA, 0.23063905 tons</div>`)[0];
+                popup_3117c26af3d5d7849a33f66caeb23fc4.setContent(html_baff590eaff7c249dd9e897c5d5387ca);
+            
+        
+
+        circle_346dd710ff602ef31c5a9b56a059f044.bindPopup(popup_3117c26af3d5d7849a33f66caeb23fc4)
+        ;
+
+        
+    
+    
+            circle_346dd710ff602ef31c5a9b56a059f044.bindTooltip(
+                `<div>
+                     Kawasaki Motors Corp USA
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_29617371a2f05518e46f2925ad3077f3 = L.circle(
+                [42.9111, -85.6596],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 524.3233382430442, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_440aedb2b19a4d3c729484ce22b2076a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9ef99e3600e95161a01ce94630357249 = $(`<div id="html_9ef99e3600e95161a01ce94630357249" style="width: 100.0%; height: 100.0%;">KEEBLER CO, 0.2362 tons</div>`)[0];
+                popup_440aedb2b19a4d3c729484ce22b2076a.setContent(html_9ef99e3600e95161a01ce94630357249);
+            
+        
+
+        circle_29617371a2f05518e46f2925ad3077f3.bindPopup(popup_440aedb2b19a4d3c729484ce22b2076a)
+        ;
+
+        
+    
+    
+            circle_29617371a2f05518e46f2925ad3077f3.bindTooltip(
+                `<div>
+                     KEEBLER CO
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fc3b79a4f2733616a4afaf5a626c37c2 = L.circle(
+                [42.9933, -85.5958],
+                {"bubblingMouseEvents": true, "color": "#57d3db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57d3db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 508.8166939132257, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_6766a4e86d75e00fe956211d57b31a58 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_354e83ecf0a98c5e84a17727e2444bae = $(`<div id="html_354e83ecf0a98c5e84a17727e2444bae" style="width: 100.0%; height: 100.0%;">KENT CAREER TECHNICAL CENTER, 0.086 tons</div>`)[0];
+                popup_6766a4e86d75e00fe956211d57b31a58.setContent(html_354e83ecf0a98c5e84a17727e2444bae);
+            
+        
+
+        circle_fc3b79a4f2733616a4afaf5a626c37c2.bindPopup(popup_6766a4e86d75e00fe956211d57b31a58)
+        ;
+
+        
+    
+    
+            circle_fc3b79a4f2733616a4afaf5a626c37c2.bindTooltip(
+                `<div>
+                     KENT CAREER TECHNICAL CENTER
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eda9eb9d0cf31c3db00bfbd918ea9643 = L.circle(
+                [42.9492, -85.6939],
+                {"bubblingMouseEvents": true, "color": "#579bdb", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#579bdb", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 765.0920211168423, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_54c70768a64c621ee5d2eaf45bc42555 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c6c26680f1460afbb7ece8d22b21f78d = $(`<div id="html_c6c26680f1460afbb7ece8d22b21f78d" style="width: 100.0%; height: 100.0%;">Kent County Waste to Energy Facility, 2.5683265 tons</div>`)[0];
+                popup_54c70768a64c621ee5d2eaf45bc42555.setContent(html_c6c26680f1460afbb7ece8d22b21f78d);
+            
+        
+
+        circle_eda9eb9d0cf31c3db00bfbd918ea9643.bindPopup(popup_54c70768a64c621ee5d2eaf45bc42555)
+        ;
+
+        
+    
+    
+            circle_eda9eb9d0cf31c3db00bfbd918ea9643.bindTooltip(
+                `<div>
+                     Kent County Waste to Energy Facility
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c6bc7b3a23d9740623d4c9c850dd27d3 = L.circle(
+                [42.8898, -85.6474],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 528.4422003081736, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9bcdff567ddd180eb750805ec57ddfd4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1412688f92ef5b04c7a8755eb2656c3b = $(`<div id="html_1412688f92ef5b04c7a8755eb2656c3b" style="width: 100.0%; height: 100.0%;">KINDEL FURNITURE COMPANY, LLC, 0.276096 tons</div>`)[0];
+                popup_9bcdff567ddd180eb750805ec57ddfd4.setContent(html_1412688f92ef5b04c7a8755eb2656c3b);
+            
+        
+
+        circle_c6bc7b3a23d9740623d4c9c850dd27d3.bindPopup(popup_9bcdff567ddd180eb750805ec57ddfd4)
+        ;
+
+        
+    
+    
+            circle_c6bc7b3a23d9740623d4c9c850dd27d3.bindTooltip(
+                `<div>
+                     KINDEL FURNITURE COMPANY, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5d4457b379f63114528ac46045d137f1 = L.circle(
+                [42.9335, -85.3403],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 543.4613454733756, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_ac4a52fe8ea724569c450b2be772e841 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0eb2d3e1a2e7a394747373414defad1d = $(`<div id="html_0eb2d3e1a2e7a394747373414defad1d" style="width: 100.0%; height: 100.0%;">KING MILLING CO, 0.421574 tons</div>`)[0];
+                popup_ac4a52fe8ea724569c450b2be772e841.setContent(html_0eb2d3e1a2e7a394747373414defad1d);
+            
+        
+
+        circle_5d4457b379f63114528ac46045d137f1.bindPopup(popup_ac4a52fe8ea724569c450b2be772e841)
+        ;
+
+        
+    
+    
+            circle_5d4457b379f63114528ac46045d137f1.bindTooltip(
+                `<div>
+                     KING MILLING CO
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_9937c4e1350d3d38c8370624a46c6a2f = L.circle(
+                [43.1586, -85.5522],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.09438198566124, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_f9152233b157204553927d2c0bee4203 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e46bd45b7c38b5782afdf439a0058408 = $(`<div id="html_e46bd45b7c38b5782afdf439a0058408" style="width: 100.0%; height: 100.0%;">KNAPE INDUSTRIES INC, 0.0015142 tons</div>`)[0];
+                popup_f9152233b157204553927d2c0bee4203.setContent(html_e46bd45b7c38b5782afdf439a0058408);
+            
+        
+
+        circle_9937c4e1350d3d38c8370624a46c6a2f.bindPopup(popup_f9152233b157204553927d2c0bee4203)
+        ;
+
+        
+    
+    
+            circle_9937c4e1350d3d38c8370624a46c6a2f.bindTooltip(
+                `<div>
+                     KNAPE INDUSTRIES INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e4271e6935f52cd44f693f6b29a6eeec = L.circle(
+                [42.8596, -85.5291],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 549.9010421891995, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_03acd4965db1a98227f02557bb537451 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_aa4959753bc02575b73fa6512a4e6e68 = $(`<div id="html_aa4959753bc02575b73fa6512a4e6e68" style="width: 100.0%; height: 100.0%;">LACKS ENTERPRISES INC., 0.48395 tons</div>`)[0];
+                popup_03acd4965db1a98227f02557bb537451.setContent(html_aa4959753bc02575b73fa6512a4e6e68);
+            
+        
+
+        circle_e4271e6935f52cd44f693f6b29a6eeec.bindPopup(popup_03acd4965db1a98227f02557bb537451)
+        ;
+
+        
+    
+    
+            circle_e4271e6935f52cd44f693f6b29a6eeec.bindTooltip(
+                `<div>
+                     LACKS ENTERPRISES INC.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0e57198c28d38f81e848b27c09ee3e63 = L.circle(
+                [42.8858, -85.5746],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 548.9822064066736, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_b8282f8bcd34c0465da76e2507942164 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0ac3b94f1554a3cc74f8112a3ba48f76 = $(`<div id="html_0ac3b94f1554a3cc74f8112a3ba48f76" style="width: 100.0%; height: 100.0%;">LACKS INDUSTRIES INC, 0.47505 tons</div>`)[0];
+                popup_b8282f8bcd34c0465da76e2507942164.setContent(html_0ac3b94f1554a3cc74f8112a3ba48f76);
+            
+        
+
+        circle_0e57198c28d38f81e848b27c09ee3e63.bindPopup(popup_b8282f8bcd34c0465da76e2507942164)
+        ;
+
+        
+    
+    
+            circle_0e57198c28d38f81e848b27c09ee3e63.bindTooltip(
+                `<div>
+                     LACKS INDUSTRIES INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_00ef143434335c8d514406b968459882 = L.circle(
+                [42.8711, -85.5609],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 623.4646867778292, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9649ef1378608ddfdd0a96123cdcc177 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_64ae70800ba59cd2463f4a2e67dcdff4 = $(`<div id="html_64ae70800ba59cd2463f4a2e67dcdff4" style="width: 100.0%; height: 100.0%;">Lacks Industries, Inc., 1.1965 tons</div>`)[0];
+                popup_9649ef1378608ddfdd0a96123cdcc177.setContent(html_64ae70800ba59cd2463f4a2e67dcdff4);
+            
+        
+
+        circle_00ef143434335c8d514406b968459882.bindPopup(popup_9649ef1378608ddfdd0a96123cdcc177)
+        ;
+
+        
+    
+    
+            circle_00ef143434335c8d514406b968459882.bindTooltip(
+                `<div>
+                     Lacks Industries, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a775a986c06f66c1c1ad62d15d36f0e1 = L.circle(
+                [42.95392, -85.34391],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 512.2761250880321, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_01173a35cfa82fc04308924554aa6378 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f6d47e14bcd84805ecfd235ffb033112 = $(`<div id="html_f6d47e14bcd84805ecfd235ffb033112" style="width: 100.0%; height: 100.0%;">Lowell City, 0.11950864 tons</div>`)[0];
+                popup_01173a35cfa82fc04308924554aa6378.setContent(html_f6d47e14bcd84805ecfd235ffb033112);
+            
+        
+
+        circle_a775a986c06f66c1c1ad62d15d36f0e1.bindPopup(popup_01173a35cfa82fc04308924554aa6378)
+        ;
+
+        
+    
+    
+            circle_a775a986c06f66c1c1ad62d15d36f0e1.bindTooltip(
+                `<div>
+                     Lowell City
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f3f1f8bfec4e87c3022f30ca9a5acff1 = L.circle(
+                [42.9347, -85.3471],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.24003294318794, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_ebe2e33a34d0025864d5f22d268667ac = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3bcef010fc426d3d24c0ae73f386681e = $(`<div id="html_3bcef010fc426d3d24c0ae73f386681e" style="width: 100.0%; height: 100.0%;">LOWELL LIGHT & POWER (LL&P), 0.002925 tons</div>`)[0];
+                popup_ebe2e33a34d0025864d5f22d268667ac.setContent(html_3bcef010fc426d3d24c0ae73f386681e);
+            
+        
+
+        circle_f3f1f8bfec4e87c3022f30ca9a5acff1.bindPopup(popup_ebe2e33a34d0025864d5f22d268667ac)
+        ;
+
+        
+    
+    
+            circle_f3f1f8bfec4e87c3022f30ca9a5acff1.bindTooltip(
+                `<div>
+                     LOWELL LIGHT & POWER (LL&P)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c7440d36cc501bc5390c304d50b670bd = L.circle(
+                [42.9334, -85.7115],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 503.41001639290215, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9fd98262f4a079a5623013cc086f11b8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6156ab61195736cb16dfb046a94cd90a = $(`<div id="html_6156ab61195736cb16dfb046a94cd90a" style="width: 100.0%; height: 100.0%;">Michigan Foam Products LLC, 0.03363 tons</div>`)[0];
+                popup_9fd98262f4a079a5623013cc086f11b8.setContent(html_6156ab61195736cb16dfb046a94cd90a);
+            
+        
+
+        circle_c7440d36cc501bc5390c304d50b670bd.bindPopup(popup_9fd98262f4a079a5623013cc086f11b8)
+        ;
+
+        
+    
+    
+            circle_c7440d36cc501bc5390c304d50b670bd.bindTooltip(
+                `<div>
+                     Michigan Foam Products LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c5e1775e696cf97732850d160393d073 = L.circle(
+                [42.9461, -85.6969],
+                {"bubblingMouseEvents": true, "color": "#5762db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5762db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 837.0959058306428, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_60ab96d13a445a4945751febd39f9ef8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5e08538cbedf440d46a0f01229a28978 = $(`<div id="html_5e08538cbedf440d46a0f01229a28978" style="width: 100.0%; height: 100.0%;">MICHIGAN PAVING & MATERIALS CO., 3.2657684 tons</div>`)[0];
+                popup_60ab96d13a445a4945751febd39f9ef8.setContent(html_5e08538cbedf440d46a0f01229a28978);
+            
+        
+
+        circle_c5e1775e696cf97732850d160393d073.bindPopup(popup_60ab96d13a445a4945751febd39f9ef8)
+        ;
+
+        
+    
+    
+            circle_c5e1775e696cf97732850d160393d073.bindTooltip(
+                `<div>
+                     MICHIGAN PAVING & MATERIALS CO.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_12180447df99279743e8f4a05af2dcfa = L.circle(
+                [43.0286, -85.6669],
+                {"bubblingMouseEvents": true, "color": "#5762db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5762db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 660.5974423970836, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_d65d7ba6f84dbf15dd42f2671e8c60f4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_747f32ef738300c05da28eab44e9d228 = $(`<div id="html_747f32ef738300c05da28eab44e9d228" style="width: 100.0%; height: 100.0%;">Michigan Paving and Materials- Woodland, 1.5561742 tons</div>`)[0];
+                popup_d65d7ba6f84dbf15dd42f2671e8c60f4.setContent(html_747f32ef738300c05da28eab44e9d228);
+            
+        
+
+        circle_12180447df99279743e8f4a05af2dcfa.bindPopup(popup_d65d7ba6f84dbf15dd42f2671e8c60f4)
+        ;
+
+        
+    
+    
+            circle_12180447df99279743e8f4a05af2dcfa.bindTooltip(
+                `<div>
+                     Michigan Paving and Materials- Woodland
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_42987295d26da75da42eeb9bfa5f047a = L.circle(
+                [43.0707, -85.6944],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 508.94373070315805, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_74ad0cee8df27b179fea81b7181c0bb2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_856b2a9a2c75e8d7c5472612b420304f = $(`<div id="html_856b2a9a2c75e8d7c5472612b420304f" style="width: 100.0%; height: 100.0%;">NBHX Trim USA Corporation, 0.0872305 tons</div>`)[0];
+                popup_74ad0cee8df27b179fea81b7181c0bb2.setContent(html_856b2a9a2c75e8d7c5472612b420304f);
+            
+        
+
+        circle_42987295d26da75da42eeb9bfa5f047a.bindPopup(popup_74ad0cee8df27b179fea81b7181c0bb2)
+        ;
+
+        
+    
+    
+            circle_42987295d26da75da42eeb9bfa5f047a.bindTooltip(
+                `<div>
+                     NBHX Trim USA Corporation
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_220d9f58bdd11dfee448006c6ec86d3d = L.circle(
+                [42.8284, -85.6799],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 871.4981086321766, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_a99fb5579d943d847c4708bf2b997ede = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_51d2a9b325a0b188dbffb691e99c2dde = $(`<div id="html_51d2a9b325a0b188dbffb691e99c2dde" style="width: 100.0%; height: 100.0%;">NORTHWEST HARDWOODS, 3.598994 tons</div>`)[0];
+                popup_a99fb5579d943d847c4708bf2b997ede.setContent(html_51d2a9b325a0b188dbffb691e99c2dde);
+            
+        
+
+        circle_220d9f58bdd11dfee448006c6ec86d3d.bindPopup(popup_a99fb5579d943d847c4708bf2b997ede)
+        ;
+
+        
+    
+    
+            circle_220d9f58bdd11dfee448006c6ec86d3d.bindTooltip(
+                `<div>
+                     NORTHWEST HARDWOODS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e9ad24e6ed0671628f379bf460c96810 = L.circle(
+                [42.9202, -85.7454],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1759.9406617916445, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_f05a09e025a10a3702b9c5de0c2be8b4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fbc7fc6dfef29c02790ee367143618b5 = $(`<div id="html_fbc7fc6dfef29c02790ee367143618b5" style="width: 100.0%; height: 100.0%;">PACKAGING CORPORATION OF AMERICA, 12.2046 tons</div>`)[0];
+                popup_f05a09e025a10a3702b9c5de0c2be8b4.setContent(html_fbc7fc6dfef29c02790ee367143618b5);
+            
+        
+
+        circle_e9ad24e6ed0671628f379bf460c96810.bindPopup(popup_f05a09e025a10a3702b9c5de0c2be8b4)
+        ;
+
+        
+    
+    
+            circle_e9ad24e6ed0671628f379bf460c96810.bindTooltip(
+                `<div>
+                     PACKAGING CORPORATION OF AMERICA
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8964903981573632a40ddda4e5172072 = L.circle(
+                [43.12861, -85.6769],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 573.9664766492856, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_060cb33697ad101ca95b8f69dba31b86 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_802783bd735aed5dcd16b7e0b7e00e06 = $(`<div id="html_802783bd735aed5dcd16b7e0b7e00e06" style="width: 100.0%; height: 100.0%;">Paul C. Miller-Sparta, 0.7170519 tons</div>`)[0];
+                popup_060cb33697ad101ca95b8f69dba31b86.setContent(html_802783bd735aed5dcd16b7e0b7e00e06);
+            
+        
+
+        circle_8964903981573632a40ddda4e5172072.bindPopup(popup_060cb33697ad101ca95b8f69dba31b86)
+        ;
+
+        
+    
+    
+            circle_8964903981573632a40ddda4e5172072.bindTooltip(
+                `<div>
+                     Paul C. Miller-Sparta
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_777c197d11f2e38adf52a49fdd321ad3 = L.circle(
+                [43.0272, -85.6549],
+                {"bubblingMouseEvents": true, "color": "#8557db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#8557db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 523.6592987202121, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_c4d326691455ac84a8aeb5c35ff32588 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_eda3ead3de736227a0e68cdf53b2d55f = $(`<div id="html_eda3ead3de736227a0e68cdf53b2d55f" style="width: 100.0%; height: 100.0%;">PITSCH WRECKING CO. - CONCRETE RECYCLING PLANT, 0.229768 tons</div>`)[0];
+                popup_c4d326691455ac84a8aeb5c35ff32588.setContent(html_eda3ead3de736227a0e68cdf53b2d55f);
+            
+        
+
+        circle_777c197d11f2e38adf52a49fdd321ad3.bindPopup(popup_c4d326691455ac84a8aeb5c35ff32588)
+        ;
+
+        
+    
+    
+            circle_777c197d11f2e38adf52a49fdd321ad3.bindTooltip(
+                `<div>
+                     PITSCH WRECKING CO. - CONCRETE RECYCLING PLANT
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e84b93486b560ec1541068ae40677777 = L.circle(
+                [43.0247, -85.7869],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 513.1923726443706, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_e3b3368e93c26b8c29cef63a8e0d9d65 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_898c285f8a7ab96bb8479f52edec7515 = $(`<div id="html_898c285f8a7ab96bb8479f52edec7515" style="width: 100.0%; height: 100.0%;">PLASAN CARBON COMPOSITES, 0.12838357 tons</div>`)[0];
+                popup_e3b3368e93c26b8c29cef63a8e0d9d65.setContent(html_898c285f8a7ab96bb8479f52edec7515);
+            
+        
+
+        circle_e84b93486b560ec1541068ae40677777.bindPopup(popup_e3b3368e93c26b8c29cef63a8e0d9d65)
+        ;
+
+        
+    
+    
+            circle_e84b93486b560ec1541068ae40677777.bindTooltip(
+                `<div>
+                     PLASAN CARBON COMPOSITES
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_38121920e8b0c81bc20ff78a28a26b22 = L.circle(
+                [42.9932, -85.6702],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 511.9551891703927, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_74589623b92ec35a19896ababf226e42 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_daa59aa0993d43608a7e64a9c1884708 = $(`<div id="html_daa59aa0993d43608a7e64a9c1884708" style="width: 100.0%; height: 100.0%;">PLASTIC PLATE INC, 0.1164 tons</div>`)[0];
+                popup_74589623b92ec35a19896ababf226e42.setContent(html_daa59aa0993d43608a7e64a9c1884708);
+            
+        
+
+        circle_38121920e8b0c81bc20ff78a28a26b22.bindPopup(popup_74589623b92ec35a19896ababf226e42)
+        ;
+
+        
+    
+    
+            circle_38121920e8b0c81bc20ff78a28a26b22.bindTooltip(
+                `<div>
+                     PLASTIC PLATE INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_969364d63cd787f114864f178f05608a = L.circle(
+                [43.0218, -85.762],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.23825721560826, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_b3d00ffe3e44da0e13541d3df90ba4ea = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b765d23f1cc7de74012bb492da57449e = $(`<div id="html_b765d23f1cc7de74012bb492da57449e" style="width: 100.0%; height: 100.0%;">PRS MANUFACTURING CO, 0.0029078 tons</div>`)[0];
+                popup_b3d00ffe3e44da0e13541d3df90ba4ea.setContent(html_b765d23f1cc7de74012bb492da57449e);
+            
+        
+
+        circle_969364d63cd787f114864f178f05608a.bindPopup(popup_b3d00ffe3e44da0e13541d3df90ba4ea)
+        ;
+
+        
+    
+    
+            circle_969364d63cd787f114864f178f05608a.bindTooltip(
+                `<div>
+                     PRS MANUFACTURING CO
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_30dc720c1a2425d80e19d569585df04d = L.circle(
+                [42.9307, -85.6836],
+                {"bubblingMouseEvents": true, "color": "#bd57db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#bd57db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 616.9685725125584, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_a0f29217697013ada6fae1d084b50443 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2834fe9533c8ae5808aee8d161662bb5 = $(`<div id="html_2834fe9533c8ae5808aee8d161662bb5" style="width: 100.0%; height: 100.0%;">PSG GRAND RAPIDS (Previously Blackmer, A Dover Co), 1.13357753 tons</div>`)[0];
+                popup_a0f29217697013ada6fae1d084b50443.setContent(html_2834fe9533c8ae5808aee8d161662bb5);
+            
+        
+
+        circle_30dc720c1a2425d80e19d569585df04d.bindPopup(popup_a0f29217697013ada6fae1d084b50443)
+        ;
+
+        
+    
+    
+            circle_30dc720c1a2425d80e19d569585df04d.bindTooltip(
+                `<div>
+                     PSG GRAND RAPIDS (Previously Blackmer, A Dover Co)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e02e8ddeea9bb67456833b194e90283c = L.circle(
+                [42.8562, -85.7072],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.38120328577514, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_a481db137dd69764a9bb727d728f8376 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_43a9189e0a1c8698bdbd70945473cee3 = $(`<div id="html_43a9189e0a1c8698bdbd70945473cee3" style="width: 100.0%; height: 100.0%;">R L Adams Plastics, Inc., 0.0042924 tons</div>`)[0];
+                popup_a481db137dd69764a9bb727d728f8376.setContent(html_43a9189e0a1c8698bdbd70945473cee3);
+            
+        
+
+        circle_e02e8ddeea9bb67456833b194e90283c.bindPopup(popup_a481db137dd69764a9bb727d728f8376)
+        ;
+
+        
+    
+    
+            circle_e02e8ddeea9bb67456833b194e90283c.bindTooltip(
+                `<div>
+                     R L Adams Plastics, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ce32352037794b16b590210bbfdf3703 = L.circle(
+                [42.9408, -85.7008],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 506.8499723787181, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_f5e466b6e1fcf58d19cc38a26466a1a9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_64eb6b06fde0ddf043d19bb7f0def151 = $(`<div id="html_64eb6b06fde0ddf043d19bb7f0def151" style="width: 100.0%; height: 100.0%;">RELIANCE FINISHING CO., 0.06695 tons</div>`)[0];
+                popup_f5e466b6e1fcf58d19cc38a26466a1a9.setContent(html_64eb6b06fde0ddf043d19bb7f0def151);
+            
+        
+
+        circle_ce32352037794b16b590210bbfdf3703.bindPopup(popup_f5e466b6e1fcf58d19cc38a26466a1a9)
+        ;
+
+        
+    
+    
+            circle_ce32352037794b16b590210bbfdf3703.bindTooltip(
+                `<div>
+                     RELIANCE FINISHING CO.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_03b33dca769c6137c8550381fa23e7f8 = L.circle(
+                [42.9314, -85.7156],
+                {"bubblingMouseEvents": true, "color": "#5762db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5762db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1616.6657723025821, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_23009ddec40ec5f8fd95113bed755d68 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3608c5204b952d94ba10c4a6eebf71a8 = $(`<div id="html_3608c5204b952d94ba10c4a6eebf71a8" style="width: 100.0%; height: 100.0%;">RIETH-RILEY CONSTRUCTION CO., INC., 10.816815 tons</div>`)[0];
+                popup_23009ddec40ec5f8fd95113bed755d68.setContent(html_3608c5204b952d94ba10c4a6eebf71a8);
+            
+        
+
+        circle_03b33dca769c6137c8550381fa23e7f8.bindPopup(popup_23009ddec40ec5f8fd95113bed755d68)
+        ;
+
+        
+    
+    
+            circle_03b33dca769c6137c8550381fa23e7f8.bindTooltip(
+                `<div>
+                     RIETH-RILEY CONSTRUCTION CO., INC.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ede0dda9d801f274b5e37895f125ad61 = L.circle(
+                [42.8801, -85.5582],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.613555174781, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_e13c5016769fbe015a67555796fca5f6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_069841f381fbead7821e4f09c6ecdd10 = $(`<div id="html_069841f381fbead7821e4f09c6ecdd10" style="width: 100.0%; height: 100.0%;">ROBERT BOSCH FUEL SYSTEMS, L.L.C., 0.006543 tons</div>`)[0];
+                popup_e13c5016769fbe015a67555796fca5f6.setContent(html_069841f381fbead7821e4f09c6ecdd10);
+            
+        
+
+        circle_ede0dda9d801f274b5e37895f125ad61.bindPopup(popup_e13c5016769fbe015a67555796fca5f6)
+        ;
+
+        
+    
+    
+            circle_ede0dda9d801f274b5e37895f125ad61.bindTooltip(
+                `<div>
+                     ROBERT BOSCH FUEL SYSTEMS, L.L.C.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5e9fb16f99009ae8f83567b86143770a = L.circle(
+                [42.8669, -85.5516],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 660.7121213619408, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_15a5b684517ce4d534f8e1ad3f4abcf8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8035e3e2a084f4a584578860fa2925d6 = $(`<div id="html_8035e3e2a084f4a584578860fa2925d6" style="width: 100.0%; height: 100.0%;">Roskam Baking Co, 1.557285 tons</div>`)[0];
+                popup_15a5b684517ce4d534f8e1ad3f4abcf8.setContent(html_8035e3e2a084f4a584578860fa2925d6);
+            
+        
+
+        circle_5e9fb16f99009ae8f83567b86143770a.bindPopup(popup_15a5b684517ce4d534f8e1ad3f4abcf8)
+        ;
+
+        
+    
+    
+            circle_5e9fb16f99009ae8f83567b86143770a.bindTooltip(
+                `<div>
+                     Roskam Baking Co
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_bf10e160cce1004ff34b9af5c5337561 = L.circle(
+                [42.9018, -85.5415],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 509.71787565993003, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_34cd59701d1bf2b4e342a0c06d6c45ac = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5cfa62dbf6f010895858e2d111a20cc3 = $(`<div id="html_5cfa62dbf6f010895858e2d111a20cc3" style="width: 100.0%; height: 100.0%;">Sheridan Publishing Grand Rapids, 0.094729 tons</div>`)[0];
+                popup_34cd59701d1bf2b4e342a0c06d6c45ac.setContent(html_5cfa62dbf6f010895858e2d111a20cc3);
+            
+        
+
+        circle_bf10e160cce1004ff34b9af5c5337561.bindPopup(popup_34cd59701d1bf2b4e342a0c06d6c45ac)
+        ;
+
+        
+    
+    
+            circle_bf10e160cce1004ff34b9af5c5337561.bindTooltip(
+                `<div>
+                     Sheridan Publishing Grand Rapids
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_96208185ecd3da7a6fc4fbbea9409a08 = L.circle(
+                [42.8411, -85.5586],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 516.4872176177321, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_340f9aa9b519683988f1a4979a6ae42c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3350c75b6da11b703b8370c90ab9b633 = $(`<div id="html_3350c75b6da11b703b8370c90ab9b633" style="width: 100.0%; height: 100.0%;">Siliconature Corporation, 0.160298 tons</div>`)[0];
+                popup_340f9aa9b519683988f1a4979a6ae42c.setContent(html_3350c75b6da11b703b8370c90ab9b633);
+            
+        
+
+        circle_96208185ecd3da7a6fc4fbbea9409a08.bindPopup(popup_340f9aa9b519683988f1a4979a6ae42c)
+        ;
+
+        
+    
+    
+            circle_96208185ecd3da7a6fc4fbbea9409a08.bindTooltip(
+                `<div>
+                     Siliconature Corporation
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_80634518b55e476aae1db15ad42e66fd = L.circle(
+                [42.9417, -85.4864],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 501.3498246881975, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_23d4b4a5d0adb99db802e7c42db7e76e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b2a57a62a340945f2097271db0d9c94d = $(`<div id="html_b2a57a62a340945f2097271db0d9c94d" style="width: 100.0%; height: 100.0%;">SOMERVILLE, 0.013674632 tons</div>`)[0];
+                popup_23d4b4a5d0adb99db802e7c42db7e76e.setContent(html_b2a57a62a340945f2097271db0d9c94d);
+            
+        
+
+        circle_80634518b55e476aae1db15ad42e66fd.bindPopup(popup_23d4b4a5d0adb99db802e7c42db7e76e)
+        ;
+
+        
+    
+    
+            circle_80634518b55e476aae1db15ad42e66fd.bindTooltip(
+                `<div>
+                     SOMERVILLE
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ee9f9787e20e6939c021b4a1e36409a6 = L.circle(
+                [42.7768, -85.6822],
+                {"bubblingMouseEvents": true, "color": "#db57c0", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db57c0", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1523.01095740922, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_c502604d529394a764212060bceafc69 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d4c084992e7b001c52152cb6adf04b93 = $(`<div id="html_d4c084992e7b001c52152cb6adf04b93" style="width: 100.0%; height: 100.0%;">South Kent Landfill, 9.9096585 tons</div>`)[0];
+                popup_c502604d529394a764212060bceafc69.setContent(html_d4c084992e7b001c52152cb6adf04b93);
+            
+        
+
+        circle_ee9f9787e20e6939c021b4a1e36409a6.bindPopup(popup_c502604d529394a764212060bceafc69)
+        ;
+
+        
+    
+    
+            circle_ee9f9787e20e6939c021b4a1e36409a6.bindTooltip(
+                `<div>
+                     South Kent Landfill
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eeb06fe42b1a5666dfd179412de1f832 = L.circle(
+                [42.9773, -85.5947],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.902446436405, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_e84bc9a51dd7707e33cb9dac7310b9c5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7993936d0798b530ccac7380f409f4c1 = $(`<div id="html_7993936d0798b530ccac7380f409f4c1" style="width: 100.0%; height: 100.0%;">SPECTRUM BRADFORD DATA CENTER, 0.00934125 tons</div>`)[0];
+                popup_e84bc9a51dd7707e33cb9dac7310b9c5.setContent(html_7993936d0798b530ccac7380f409f4c1);
+            
+        
+
+        circle_eeb06fe42b1a5666dfd179412de1f832.bindPopup(popup_e84bc9a51dd7707e33cb9dac7310b9c5)
+        ;
+
+        
+    
+    
+            circle_eeb06fe42b1a5666dfd179412de1f832.bindTooltip(
+                `<div>
+                     SPECTRUM BRADFORD DATA CENTER
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8332b02dd4c9779739b5518cdf9f778e = L.circle(
+                [42.9552, -85.6686],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 503.3771654326775, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_6416aac87e9b7eba3d3fccb4c909894f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_065b8845ac65f8627b443b93afbeba78 = $(`<div id="html_065b8845ac65f8627b443b93afbeba78" style="width: 100.0%; height: 100.0%;">Spectrum Decorative Finishes, Inc., 0.0333118 tons</div>`)[0];
+                popup_6416aac87e9b7eba3d3fccb4c909894f.setContent(html_065b8845ac65f8627b443b93afbeba78);
+            
+        
+
+        circle_8332b02dd4c9779739b5518cdf9f778e.bindPopup(popup_6416aac87e9b7eba3d3fccb4c909894f)
+        ;
+
+        
+    
+    
+            circle_8332b02dd4c9779739b5518cdf9f778e.bindTooltip(
+                `<div>
+                     Spectrum Decorative Finishes, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5c071746296a36b489b9153bc7ef66f6 = L.circle(
+                [42.9561, -85.685],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 517.6438563599737, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_7db6b48f9d0e62337f700fe31328ea56 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9ae6d2102c38d7ca6849281ace623b05 = $(`<div id="html_9ae6d2102c38d7ca6849281ace623b05" style="width: 100.0%; height: 100.0%;">SPECTRUM E-COAT, INC, 0.1715014 tons</div>`)[0];
+                popup_7db6b48f9d0e62337f700fe31328ea56.setContent(html_9ae6d2102c38d7ca6849281ace623b05);
+            
+        
+
+        circle_5c071746296a36b489b9153bc7ef66f6.bindPopup(popup_7db6b48f9d0e62337f700fe31328ea56)
+        ;
+
+        
+    
+    
+            circle_5c071746296a36b489b9153bc7ef66f6.bindTooltip(
+                `<div>
+                     SPECTRUM E-COAT, INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_96547f23eaa0896de050954d45ba2e9b = L.circle(
+                [42.9538, -85.6217],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 547.3790341221196, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_98ef9a59807459126ef9fcdaa63f54b0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f23b66da296529063835971b96f47ea6 = $(`<div id="html_f23b66da296529063835971b96f47ea6" style="width: 100.0%; height: 100.0%;">SPECTRUM HEALTH BLODGETT CAMPUS, 0.4595214 tons</div>`)[0];
+                popup_98ef9a59807459126ef9fcdaa63f54b0.setContent(html_f23b66da296529063835971b96f47ea6);
+            
+        
+
+        circle_96547f23eaa0896de050954d45ba2e9b.bindPopup(popup_98ef9a59807459126ef9fcdaa63f54b0)
+        ;
+
+        
+    
+    
+            circle_96547f23eaa0896de050954d45ba2e9b.bindTooltip(
+                `<div>
+                     SPECTRUM HEALTH BLODGETT CAMPUS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1678e028e6e62766262c84b84027fb25 = L.circle(
+                [42.9695, -85.6657],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 715.1718124261791, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_f99c65284b00cdd0e46e59496ab9b7a8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5f4b18d674260af04a30bf86e43b08f9 = $(`<div id="html_5f4b18d674260af04a30bf86e43b08f9" style="width: 100.0%; height: 100.0%;">SPECTRUM HEALTH-BUTTERWORTH CAMPUS, 2.08479085 tons</div>`)[0];
+                popup_f99c65284b00cdd0e46e59496ab9b7a8.setContent(html_5f4b18d674260af04a30bf86e43b08f9);
+            
+        
+
+        circle_1678e028e6e62766262c84b84027fb25.bindPopup(popup_f99c65284b00cdd0e46e59496ab9b7a8)
+        ;
+
+        
+    
+    
+            circle_1678e028e6e62766262c84b84027fb25.bindTooltip(
+                `<div>
+                     SPECTRUM HEALTH-BUTTERWORTH CAMPUS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c7020a9e2ca33cf67214cd64d5e996cb = L.circle(
+                [42.8628, -85.5557],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 757.8957302400925, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_a0091b9546142125adb839a25cdc872f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8e7fb8bd5a8096b40a31f6c97150dea3 = $(`<div id="html_8e7fb8bd5a8096b40a31f6c97150dea3" style="width: 100.0%; height: 100.0%;">Steelcase Inc.- Kentwood Complex, 2.498622 tons</div>`)[0];
+                popup_a0091b9546142125adb839a25cdc872f.setContent(html_8e7fb8bd5a8096b40a31f6c97150dea3);
+            
+        
+
+        circle_c7020a9e2ca33cf67214cd64d5e996cb.bindPopup(popup_a0091b9546142125adb839a25cdc872f)
+        ;
+
+        
+    
+    
+            circle_c7020a9e2ca33cf67214cd64d5e996cb.bindTooltip(
+                `<div>
+                     Steelcase Inc.- Kentwood Complex
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_bd583847beb3d75640760377f413c172 = L.circle(
+                [42.9507, -85.6748],
+                {"bubblingMouseEvents": true, "color": "#5762db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5762db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1203.6871113402071, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_5e5f3d173abe12c00017bc2252c84fe6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_427fc4cfd2251b563b0680a7c55d7379 = $(`<div id="html_427fc4cfd2251b563b0680a7c55d7379" style="width: 100.0%; height: 100.0%;">SUPERIOR ASPHALT INC, 6.8166333 tons</div>`)[0];
+                popup_5e5f3d173abe12c00017bc2252c84fe6.setContent(html_427fc4cfd2251b563b0680a7c55d7379);
+            
+        
+
+        circle_bd583847beb3d75640760377f413c172.bindPopup(popup_5e5f3d173abe12c00017bc2252c84fe6)
+        ;
+
+        
+    
+    
+            circle_bd583847beb3d75640760377f413c172.bindTooltip(
+                `<div>
+                     SUPERIOR ASPHALT INC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ee7b4e3deff30eec43403f6a3af9b7cf = L.circle(
+                [42.8522, -85.5602],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 504.5236247133284, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_c8907a530aa9e8bc162f684c0b0a0752 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_77a8c52067fda862aab58addb6b45add = $(`<div id="html_77a8c52067fda862aab58addb6b45add" style="width: 100.0%; height: 100.0%;">SUPERNAP GRAND RAPIDS, LLC, 0.0444166 tons</div>`)[0];
+                popup_c8907a530aa9e8bc162f684c0b0a0752.setContent(html_77a8c52067fda862aab58addb6b45add);
+            
+        
+
+        circle_ee7b4e3deff30eec43403f6a3af9b7cf.bindPopup(popup_c8907a530aa9e8bc162f684c0b0a0752)
+        ;
+
+        
+    
+    
+            circle_ee7b4e3deff30eec43403f6a3af9b7cf.bindTooltip(
+                `<div>
+                     SUPERNAP GRAND RAPIDS, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5287a28ef1067073f58740ee4fdda6d7 = L.circle(
+                [43.153793, -85.706567],
+                {"bubblingMouseEvents": true, "color": "#75db57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#75db57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 501.80566717262667, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_3cec27db19e4417e42c2b96e5313151c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c3f1ec221a604ddf027da9be5076763c = $(`<div id="html_c3f1ec221a604ddf027da9be5076763c" style="width: 100.0%; height: 100.0%;">tesa Plant Sparta, LLC, 0.01809 tons</div>`)[0];
+                popup_3cec27db19e4417e42c2b96e5313151c.setContent(html_c3f1ec221a604ddf027da9be5076763c);
+            
+        
+
+        circle_5287a28ef1067073f58740ee4fdda6d7.bindPopup(popup_3cec27db19e4417e42c2b96e5313151c)
+        ;
+
+        
+    
+    
+            circle_5287a28ef1067073f58740ee4fdda6d7.bindTooltip(
+                `<div>
+                     tesa Plant Sparta, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f0c734f0799ba653f431713e4d4284b1 = L.circle(
+                [42.9228, -85.7458],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 522.9661455242706, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9ba90b3aba99097ca6ee31838aa700fb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_bb56039fe1fd9a3825dcbc045cb3c8c4 = $(`<div id="html_bb56039fe1fd9a3825dcbc045cb3c8c4" style="width: 100.0%; height: 100.0%;">Top Grade Aggregates, LLC, 0.223054 tons</div>`)[0];
+                popup_9ba90b3aba99097ca6ee31838aa700fb.setContent(html_bb56039fe1fd9a3825dcbc045cb3c8c4);
+            
+        
+
+        circle_f0c734f0799ba653f431713e4d4284b1.bindPopup(popup_9ba90b3aba99097ca6ee31838aa700fb)
+        ;
+
+        
+    
+    
+            circle_f0c734f0799ba653f431713e4d4284b1.bindTooltip(
+                `<div>
+                     Top Grade Aggregates, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5445570ab8fc219d71dde102f66697f6 = L.circle(
+                [42.9022, -85.6473],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.0, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_9ee8d9d4efac41af1c85874408f42c31 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_760480f3366fa2d1f7c1114dba3cc77a = $(`<div id="html_760480f3366fa2d1f7c1114dba3cc77a" style="width: 100.0%; height: 100.0%;">VALLEY CITY PLATING, 0.0006 tons</div>`)[0];
+                popup_9ee8d9d4efac41af1c85874408f42c31.setContent(html_760480f3366fa2d1f7c1114dba3cc77a);
+            
+        
+
+        circle_5445570ab8fc219d71dde102f66697f6.bindPopup(popup_9ee8d9d4efac41af1c85874408f42c31)
+        ;
+
+        
+    
+    
+            circle_5445570ab8fc219d71dde102f66697f6.bindTooltip(
+                `<div>
+                     VALLEY CITY PLATING
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_fd921b5efe9c418b501760b2e317b73b = L.circle(
+                [42.9629, -85.6725],
+                {"bubblingMouseEvents": true, "color": "#db5788", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5788", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 794.8038150245229, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_2b12f5c06cd8e4c4eea12e1c80506f21 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d53be5966c00f27cd88cfbaa2ca8e822 = $(`<div id="html_d53be5966c00f27cd88cfbaa2ca8e822" style="width: 100.0%; height: 100.0%;">Vicinity Energy Grand Rapids, LLC, 2.85612 tons</div>`)[0];
+                popup_2b12f5c06cd8e4c4eea12e1c80506f21.setContent(html_d53be5966c00f27cd88cfbaa2ca8e822);
+            
+        
+
+        circle_fd921b5efe9c418b501760b2e317b73b.bindPopup(popup_2b12f5c06cd8e4c4eea12e1c80506f21)
+        ;
+
+        
+    
+    
+            circle_fd921b5efe9c418b501760b2e317b73b.bindTooltip(
+                `<div>
+                     Vicinity Energy Grand Rapids, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_91a5deaf9296cb9c29c1f90ef2efaf90 = L.circle(
+                [43.1284, -85.5053],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 501.91074936231536, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_8428148365023e6124eadacabe6c9379 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_46408fac737598465258a530ebd80132 = $(`<div id="html_46408fac737598465258a530ebd80132" style="width: 100.0%; height: 100.0%;">WELLS, 0.019107844 tons</div>`)[0];
+                popup_8428148365023e6124eadacabe6c9379.setContent(html_46408fac737598465258a530ebd80132);
+            
+        
+
+        circle_91a5deaf9296cb9c29c1f90ef2efaf90.bindPopup(popup_8428148365023e6124eadacabe6c9379)
+        ;
+
+        
+    
+    
+            circle_91a5deaf9296cb9c29c1f90ef2efaf90.bindTooltip(
+                `<div>
+                     WELLS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a5322393cf8c978f518f92727b369625 = L.circle(
+                [43.2447, -85.7117],
+                {"bubblingMouseEvents": true, "color": "#57db72", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db72", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 503.8869365572226, "stroke": true, "weight": 3}
+            ).addTo(map_e71ffe2d3493e245170798dc37b3f0ec);
+        
+    
+        var popup_46902ff049a50cfd27c03095fe0a038a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_67d1894a684a74f5cc6e1e48557cda25 = $(`<div id="html_67d1894a684a74f5cc6e1e48557cda25" style="width: 100.0%; height: 100.0%;">WILDERNESS AIRPARK, 0.03824953 tons</div>`)[0];
+                popup_46902ff049a50cfd27c03095fe0a038a.setContent(html_67d1894a684a74f5cc6e1e48557cda25);
+            
+        
+
+        circle_a5322393cf8c978f518f92727b369625.bindPopup(popup_46902ff049a50cfd27c03095fe0a038a)
+        ;
+
+        
+    
+    
+            circle_a5322393cf8c978f518f92727b369625.bindTooltip(
+                `<div>
+                     WILDERNESS AIRPARK
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
