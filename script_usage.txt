@@ -37,3 +37,13 @@ This document contains instructions for running various scripts for data extract
 
 **pa_data_processing_general.py**
 - aaa
+
+**create_emissions_map.py**
+- Creates maps
+- *Instructions*
+	1. Create a venv (python -m venv emissions-map-env)
+	2. Activate the venv (path/to/emissions-map-env/Scripts/activate)
+	3. Install required libraries from 'emissions-map-env-requirements.txt' (pip install -r path/to/esl_scripts/venv_requirements/emissions-map-env-requirements.txt)
+	4. python path/to/create_emissions_map.py -i path/to/input/file -o /path/to/output/dir -c "STATE - County"
+- Example
+	- python .\create_emissions_map.py -i "C:\Users\tuann\file.xlsx" -o "C:\Users\tuann\" -c "MI - Kent" 

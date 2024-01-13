@@ -87,7 +87,7 @@ def create_color_dict(df):
         print(e)
         return None
 
-def create_map(df):
+def create_emission_source_map(df):
     '''
     Description:
         - Uses the dataframe to create a map of locations with emissions data
@@ -189,7 +189,7 @@ def main():
 
     try:
         df = create_df(args.input_xlsx_path, args.county)
-        map = create_map(df)
+        map = create_emission_source_map(df)
         output_path = os.path.join(args.output_dir, 'map.html')
         map.save(output_path)
         print("Map saved")
