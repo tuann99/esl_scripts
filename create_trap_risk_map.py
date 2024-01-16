@@ -10,7 +10,8 @@ road_data = r"C:\Users\tuann\github\esl_scripts\data\trap_map_data\zip_code_and_
 road_gdf = gpd.read_file(road_data)
 road_geometry = unary_union(road_gdf['geometry'])
 road_gs = gpd.GeoSeries([road_geometry], crs=road_gdf.crs)
-road_gs = road_gs.to_crs(epsg=3857)
+road_gs = road_gs.to_crs(epsg=3857) # WGS 84 / Pseudo-Mercator units = meters
+# EPSG:3174 (NAD83 / Great Lakes Albers) is one that is more focused on NA with units in meters too
 
 template = """
 {% macro html(this, kwargs) %}
