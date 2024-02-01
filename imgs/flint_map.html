@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9472df94199318c3c5f1f6ef7e61a73c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_9472df94199318c3c5f1f6ef7e61a73c" ></div>
+        
+    
+        <div style="
+            padding: 15px;
+            position: fixed; 
+            top: 5vh;
+            left: 5vw;
+            width: auto;
+            height: auto;
+            max-width: 30vw;
+            max-height: 40vh;
+            overflow: auto;
+            z-index:9999;
+            font-size:14px;
+            background-color: #ffffff;
+            ">
+            <button onclick="toggleTable()">Show Top 5 Emissions Sites</button>
+            <div id="tableDiv" style="display: none;">
+                
+        <table style="width:100%">
+            <tr>
+                <th>Site Name</th>
+                <th>Emissions (tons)</th>
+            </tr>
+        <tr><td>Citizens Disposal, Inc.</td><td>29.165645</td></tr><tr><td>Brent Run Landfill</td><td>15.834386</td></tr><tr><td>General Motors LLC Flint Assembly</td><td>6.99748865</td></tr><tr><td>GENESEE POWER STATION LIMITED PARTNERSHIP</td><td>3.984619835</td></tr><tr><td>Ace-Saginaw Paving Co. Plant 3</td><td>1.978767</td></tr></table>
+            </div>
+            <hr style="border: 0.3px solid #808080;">
+            <p><a style="color:#808080;font-size:150%;">Facility Type</a></p>
+            <hr style="border: 0.3px solid #808080;">
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db5f57;"></i> Landfill</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#dbae57;"></i> Automobile/Truck or Parts Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#b9db57;"></i> Electricity Generation via Combustion</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#69db57;"></i> Hot Mix Asphalt Plant</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#57db94;"></i> Airport</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#57d3db;"></i> Compressor Station</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#5784db;"></i> Unspecified</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#7957db;"></i> Institutional (school, hospital, prison, etc.)</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#c957db;"></i> Rail Yard</p>
+            
+            <p><i class="fa fa-circle fa-1x" style="color:#db579e;"></i> Petroleum Storage Facility</p>
+            
+        </div>
+        <script>
+        function toggleTable() {
+            var x = document.getElementById("tableDiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        </script>
+        
+</body>
+<script>
+    
+    
+            var map_9472df94199318c3c5f1f6ef7e61a73c = L.map(
+                "map_9472df94199318c3c5f1f6ef7e61a73c",
+                {
+                    center: [43.012379374999995, -83.71339833333333],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 11,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_5ab98b4147f3e580b122069fee8770c1 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_5ab98b4147f3e580b122069fee8770c1.addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+            var circle_dccd760a63c20c1a51228b28fc9e17b8 = L.circle(
+                [42.9041, -83.7235],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000.0, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_20954b61cf9b59fe6ccb5c5ae0bd2cee = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_91d418250f5650f8bbeac7ac84f526db = $(`<div id="html_91d418250f5650f8bbeac7ac84f526db" style="width: 100.0%; height: 100.0%;">Citizens Disposal, Inc., 29.165645 tons</div>`)[0];
+                popup_20954b61cf9b59fe6ccb5c5ae0bd2cee.setContent(html_91d418250f5650f8bbeac7ac84f526db);
+            
+        
+
+        circle_dccd760a63c20c1a51228b28fc9e17b8.bindPopup(popup_20954b61cf9b59fe6ccb5c5ae0bd2cee)
+        ;
+
+        
+    
+    
+            circle_dccd760a63c20c1a51228b28fc9e17b8.bindTooltip(
+                `<div>
+                     Citizens Disposal, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_45e412305418b7a92c29901a5fff7c59 = L.circle(
+                [43.1732, -83.8459],
+                {"bubblingMouseEvents": true, "color": "#db5f57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db5f57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 3171.647910256738, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_0bfd30ccffca3bc7a8be656caf0ea667 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7e4a7d36e7f356c4816d6843608a3341 = $(`<div id="html_7e4a7d36e7f356c4816d6843608a3341" style="width: 100.0%; height: 100.0%;">Brent Run Landfill, 15.834386 tons</div>`)[0];
+                popup_0bfd30ccffca3bc7a8be656caf0ea667.setContent(html_7e4a7d36e7f356c4816d6843608a3341);
+            
+        
+
+        circle_45e412305418b7a92c29901a5fff7c59.bindPopup(popup_0bfd30ccffca3bc7a8be656caf0ea667)
+        ;
+
+        
+    
+    
+            circle_45e412305418b7a92c29901a5fff7c59.bindTooltip(
+                `<div>
+                     Brent Run Landfill
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5c7083d7a89e36f6d5dba83582635b50 = L.circle(
+                [42.985622, -83.716612],
+                {"bubblingMouseEvents": true, "color": "#dbae57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#dbae57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1959.6873792431861, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_d74313614ec65db31cbf27a202e1d134 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_99c87531cb63ac4dcf555c0a04f694e4 = $(`<div id="html_99c87531cb63ac4dcf555c0a04f694e4" style="width: 100.0%; height: 100.0%;">General Motors LLC Flint Assembly, 6.99748865 tons</div>`)[0];
+                popup_d74313614ec65db31cbf27a202e1d134.setContent(html_99c87531cb63ac4dcf555c0a04f694e4);
+            
+        
+
+        circle_5c7083d7a89e36f6d5dba83582635b50.bindPopup(popup_d74313614ec65db31cbf27a202e1d134)
+        ;
+
+        
+    
+    
+            circle_5c7083d7a89e36f6d5dba83582635b50.bindTooltip(
+                `<div>
+                     General Motors LLC Flint Assembly
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_08141ce5217f665cb6c176f012d04350 = L.circle(
+                [43.085103, -83.669317],
+                {"bubblingMouseEvents": true, "color": "#b9db57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#b9db57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1546.479219831719, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_9f97cc171eefa0bf24d5a581d3493b53 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3ad49459585e43c734fd52342a0001d0 = $(`<div id="html_3ad49459585e43c734fd52342a0001d0" style="width: 100.0%; height: 100.0%;">GENESEE POWER STATION LIMITED PARTNERSHIP, 3.984619835 tons</div>`)[0];
+                popup_9f97cc171eefa0bf24d5a581d3493b53.setContent(html_3ad49459585e43c734fd52342a0001d0);
+            
+        
+
+        circle_08141ce5217f665cb6c176f012d04350.bindPopup(popup_9f97cc171eefa0bf24d5a581d3493b53)
+        ;
+
+        
+    
+    
+            circle_08141ce5217f665cb6c176f012d04350.bindTooltip(
+                `<div>
+                     GENESEE POWER STATION LIMITED PARTNERSHIP
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_20842570abec91abe55166ec56ba35b7 = L.circle(
+                [42.9685, -83.6465],
+                {"bubblingMouseEvents": true, "color": "#69db57", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#69db57", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1271.3810297365678, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_485b04717041a039fd0125100c2810c8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_584c4400dc05f285f93b1492859ebf68 = $(`<div id="html_584c4400dc05f285f93b1492859ebf68" style="width: 100.0%; height: 100.0%;">Ace-Saginaw Paving Co. Plant 3, 1.978767 tons</div>`)[0];
+                popup_485b04717041a039fd0125100c2810c8.setContent(html_584c4400dc05f285f93b1492859ebf68);
+            
+        
+
+        circle_20842570abec91abe55166ec56ba35b7.bindPopup(popup_485b04717041a039fd0125100c2810c8)
+        ;
+
+        
+    
+    
+            circle_20842570abec91abe55166ec56ba35b7.bindTooltip(
+                `<div>
+                     Ace-Saginaw Paving Co. Plant 3
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_83960eddc5d22a978075f355c4a69eb5 = L.circle(
+                [42.9687, -83.7522],
+                {"bubblingMouseEvents": true, "color": "#57db94", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db94", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1230.5646063718118, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_cb92445565e54786dd74ea47352118c2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ef8efc668f06fea92016b33562e48858 = $(`<div id="html_ef8efc668f06fea92016b33562e48858" style="width: 100.0%; height: 100.0%;">Bishop International, 1.68115785 tons</div>`)[0];
+                popup_cb92445565e54786dd74ea47352118c2.setContent(html_ef8efc668f06fea92016b33562e48858);
+            
+        
+
+        circle_83960eddc5d22a978075f355c4a69eb5.bindPopup(popup_cb92445565e54786dd74ea47352118c2)
+        ;
+
+        
+    
+    
+            circle_83960eddc5d22a978075f355c4a69eb5.bindTooltip(
+                `<div>
+                     Bishop International
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_6703dd300213c06c38a4f14dc1a6891b = L.circle(
+                [43.1519, -83.5625],
+                {"bubblingMouseEvents": true, "color": "#57d3db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57d3db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1195.8761224782972, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_cf8078a1aff926e70a05e2119c2099ff = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f72611e912180a4b377710ceefc477ad = $(`<div id="html_f72611e912180a4b377710ceefc477ad" style="width: 100.0%; height: 100.0%;">Great Lakes Gas Transmission Station #13, 1.42823 tons</div>`)[0];
+                popup_cf8078a1aff926e70a05e2119c2099ff.setContent(html_f72611e912180a4b377710ceefc477ad);
+            
+        
+
+        circle_6703dd300213c06c38a4f14dc1a6891b.bindPopup(popup_cf8078a1aff926e70a05e2119c2099ff)
+        ;
+
+        
+    
+    
+            circle_6703dd300213c06c38a4f14dc1a6891b.bindTooltip(
+                `<div>
+                     Great Lakes Gas Transmission Station #13
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_453966a5e23646c6ecb94a2e86c1395d = L.circle(
+                [42.9729, -83.7942],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1107.7737835371533, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_db586fa40b40c70ee68c37b2b3ca7d3f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4c3efa56fcd0d15024ddcaec83a11340 = $(`<div id="html_4c3efa56fcd0d15024ddcaec83a11340" style="width: 100.0%; height: 100.0%;">GM LLC Customer Care & Aftersales - Swartz Creek, 0.78584 tons</div>`)[0];
+                popup_db586fa40b40c70ee68c37b2b3ca7d3f.setContent(html_4c3efa56fcd0d15024ddcaec83a11340);
+            
+        
+
+        circle_453966a5e23646c6ecb94a2e86c1395d.bindPopup(popup_db586fa40b40c70ee68c37b2b3ca7d3f)
+        ;
+
+        
+    
+    
+            circle_453966a5e23646c6ecb94a2e86c1395d.bindTooltip(
+                `<div>
+                     GM LLC Customer Care & Aftersales - Swartz Creek
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e0b1f4663a47ac449a24c9335d8dbaa0 = L.circle(
+                [43.0673, -83.8444],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1096.5718575738492, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_34ca4d92172ebb400b6e9ce5cd5f3ab0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7050dc8cf68fe28291d87ea9b74a3db8 = $(`<div id="html_7050dc8cf68fe28291d87ea9b74a3db8" style="width: 100.0%; height: 100.0%;">Hurley Medical Center, 0.7041622 tons</div>`)[0];
+                popup_34ca4d92172ebb400b6e9ce5cd5f3ab0.setContent(html_7050dc8cf68fe28291d87ea9b74a3db8);
+            
+        
+
+        circle_e0b1f4663a47ac449a24c9335d8dbaa0.bindPopup(popup_34ca4d92172ebb400b6e9ce5cd5f3ab0)
+        ;
+
+        
+    
+    
+            circle_e0b1f4663a47ac449a24c9335d8dbaa0.bindTooltip(
+                `<div>
+                     Hurley Medical Center
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f08c1e5b4e0b4f59e6167c8ac35d04f0 = L.circle(
+                [43.0585, -83.6766],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1088.1109389824062, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_4e6bd42216002a85d453d4d1291bde3b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d50ad999fe2a2c47063cad86a2c1af95 = $(`<div id="html_d50ad999fe2a2c47063cad86a2c1af95" style="width: 100.0%; height: 100.0%;">LOCKHART CHEMICAL COMPANY, 0.6424702 tons</div>`)[0];
+                popup_4e6bd42216002a85d453d4d1291bde3b.setContent(html_d50ad999fe2a2c47063cad86a2c1af95);
+            
+        
+
+        circle_f08c1e5b4e0b4f59e6167c8ac35d04f0.bindPopup(popup_4e6bd42216002a85d453d4d1291bde3b)
+        ;
+
+        
+    
+    
+            circle_f08c1e5b4e0b4f59e6167c8ac35d04f0.bindTooltip(
+                `<div>
+                     LOCKHART CHEMICAL COMPANY
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c124bab4eaecfee7d5e8d307dadb8b13 = L.circle(
+                [42.8922, -83.6422],
+                {"bubblingMouseEvents": true, "color": "#7957db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#7957db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1065.7453032745218, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_1edc19d04155668f19762afb21d00d17 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9e5f17600ed4fae708cb62a76b8567a4 = $(`<div id="html_9e5f17600ed4fae708cb62a76b8567a4" style="width: 100.0%; height: 100.0%;">ASCENSION GENESYS HOSPITAL, 0.47939325 tons</div>`)[0];
+                popup_1edc19d04155668f19762afb21d00d17.setContent(html_9e5f17600ed4fae708cb62a76b8567a4);
+            
+        
+
+        circle_c124bab4eaecfee7d5e8d307dadb8b13.bindPopup(popup_1edc19d04155668f19762afb21d00d17)
+        ;
+
+        
+    
+    
+            circle_c124bab4eaecfee7d5e8d307dadb8b13.bindTooltip(
+                `<div>
+                     ASCENSION GENESYS HOSPITAL
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b09a48385b6c9b3d2a59a0f1231c09a8 = L.circle(
+                [43.0175, -83.7328],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1061.830660945124, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_a57c3391a1358dc9532f2f7cbb65e03f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f6c2f5efe361e5a25c5213f57690f9ca = $(`<div id="html_f6c2f5efe361e5a25c5213f57690f9ca" style="width: 100.0%; height: 100.0%;">MCLAREN FLINT, 0.45085 tons</div>`)[0];
+                popup_a57c3391a1358dc9532f2f7cbb65e03f.setContent(html_f6c2f5efe361e5a25c5213f57690f9ca);
+            
+        
+
+        circle_b09a48385b6c9b3d2a59a0f1231c09a8.bindPopup(popup_a57c3391a1358dc9532f2f7cbb65e03f)
+        ;
+
+        
+    
+    
+            circle_b09a48385b6c9b3d2a59a0f1231c09a8.bindTooltip(
+                `<div>
+                     MCLAREN FLINT
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ecfaaa7581d9197669dc3beb5b5f6539 = L.circle(
+                [42.975746, -83.7212],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1052.159866104927, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_902eeaed0562616b5ecd8516540dd789 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d47dc62924f95d0d08c70f9088dbb435 = $(`<div id="html_d47dc62924f95d0d08c70f9088dbb435" style="width: 100.0%; height: 100.0%;">General Motors LLC Flint Metal Center, 0.3803363 tons</div>`)[0];
+                popup_902eeaed0562616b5ecd8516540dd789.setContent(html_d47dc62924f95d0d08c70f9088dbb435);
+            
+        
+
+        circle_ecfaaa7581d9197669dc3beb5b5f6539.bindPopup(popup_902eeaed0562616b5ecd8516540dd789)
+        ;
+
+        
+    
+    
+            circle_ecfaaa7581d9197669dc3beb5b5f6539.bindTooltip(
+                `<div>
+                     General Motors LLC Flint Metal Center
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_4b4cf97bcba25df0692fd4aecabddcdb = L.circle(
+                [43.019, -83.6875],
+                {"bubblingMouseEvents": true, "color": "#7957db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#7957db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1050.2926462075307, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_d47f52818227c62148aae1fc4b51a99a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fb343a43e2ed939f46a0065332331232 = $(`<div id="html_fb343a43e2ed939f46a0065332331232" style="width: 100.0%; height: 100.0%;">UNIVERSITY OF MICHIGAN FLINT, 0.36672164 tons</div>`)[0];
+                popup_d47f52818227c62148aae1fc4b51a99a.setContent(html_fb343a43e2ed939f46a0065332331232);
+            
+        
+
+        circle_4b4cf97bcba25df0692fd4aecabddcdb.bindPopup(popup_d47f52818227c62148aae1fc4b51a99a)
+        ;
+
+        
+    
+    
+            circle_4b4cf97bcba25df0692fd4aecabddcdb.bindTooltip(
+                `<div>
+                     UNIVERSITY OF MICHIGAN FLINT
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a1f2242b1cdddeb886f987d485f5a670 = L.circle(
+                [43.0525, -83.8049],
+                {"bubblingMouseEvents": true, "color": "#57db94", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db94", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1045.982882600613, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_9b8931eafe2d39dfeb56d24a6d1bbc96 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_891f3b5a04385729e36dc30ed173c389 = $(`<div id="html_891f3b5a04385729e36dc30ed173c389" style="width: 100.0%; height: 100.0%;">DALTON, 0.3352974 tons</div>`)[0];
+                popup_9b8931eafe2d39dfeb56d24a6d1bbc96.setContent(html_891f3b5a04385729e36dc30ed173c389);
+            
+        
+
+        circle_a1f2242b1cdddeb886f987d485f5a670.bindPopup(popup_9b8931eafe2d39dfeb56d24a6d1bbc96)
+        ;
+
+        
+    
+    
+            circle_a1f2242b1cdddeb886f987d485f5a670.bindTooltip(
+                `<div>
+                     DALTON
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f259d30843fd48364d8bf6cfe9a05d0b = L.circle(
+                [43.077334, -83.676031],
+                {"bubblingMouseEvents": true, "color": "#c957db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#c957db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1032.68960441159, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_0274d334a9b39a1c92784e05b9441d5c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_543fc1472ccbfc06e2d0b16bd964baab = $(`<div id="html_543fc1472ccbfc06e2d0b16bd964baab" style="width: 100.0%; height: 100.0%;">MCGREW, 0.2383707 tons</div>`)[0];
+                popup_0274d334a9b39a1c92784e05b9441d5c.setContent(html_543fc1472ccbfc06e2d0b16bd964baab);
+            
+        
+
+        circle_f259d30843fd48364d8bf6cfe9a05d0b.bindPopup(popup_0274d334a9b39a1c92784e05b9441d5c)
+        ;
+
+        
+    
+    
+            circle_f259d30843fd48364d8bf6cfe9a05d0b.bindTooltip(
+                `<div>
+                     MCGREW
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f49e940de19000540a36a32d9e377890 = L.circle(
+                [42.9748, -83.715],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1017.9919333292196, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_3757698afb9fefa70f49d93dac71d015 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_718f2685b9ac1800ba7696dc38882702 = $(`<div id="html_718f2685b9ac1800ba7696dc38882702" style="width: 100.0%; height: 100.0%;">GM FLINT ENGINE OPERATIONS, 0.131204 tons</div>`)[0];
+                popup_3757698afb9fefa70f49d93dac71d015.setContent(html_718f2685b9ac1800ba7696dc38882702);
+            
+        
+
+        circle_f49e940de19000540a36a32d9e377890.bindPopup(popup_3757698afb9fefa70f49d93dac71d015)
+        ;
+
+        
+    
+    
+            circle_f49e940de19000540a36a32d9e377890.bindTooltip(
+                `<div>
+                     GM FLINT ENGINE OPERATIONS
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_f522752e5f70a53fc7f573d9f6ef45a1 = L.circle(
+                [42.8076, -83.7699],
+                {"bubblingMouseEvents": true, "color": "#57db94", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db94", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1013.1098741323532, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_a12ce6e1b80970f58fcf93077811d0b5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6bced62bd5160e8050dd88ddc530be92 = $(`<div id="html_6bced62bd5160e8050dd88ddc530be92" style="width: 100.0%; height: 100.0%;">PRICES, 0.09560692 tons</div>`)[0];
+                popup_a12ce6e1b80970f58fcf93077811d0b5.setContent(html_6bced62bd5160e8050dd88ddc530be92);
+            
+        
+
+        circle_f522752e5f70a53fc7f573d9f6ef45a1.bindPopup(popup_a12ce6e1b80970f58fcf93077811d0b5)
+        ;
+
+        
+    
+    
+            circle_f522752e5f70a53fc7f573d9f6ef45a1.bindTooltip(
+                `<div>
+                     PRICES
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5db265a844d53238326e8e58592e90a8 = L.circle(
+                [43.0816, -83.6676],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1009.6637737534758, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_4488b047250bd6cb1d4b92fe69041196 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e3ade9e15b63c051895fe52ffc00737a = $(`<div id="html_e3ade9e15b63c051895fe52ffc00737a" style="width: 100.0%; height: 100.0%;">UNIVERSAL COATING INC., 0.07048 tons</div>`)[0];
+                popup_4488b047250bd6cb1d4b92fe69041196.setContent(html_e3ade9e15b63c051895fe52ffc00737a);
+            
+        
+
+        circle_5db265a844d53238326e8e58592e90a8.bindPopup(popup_4488b047250bd6cb1d4b92fe69041196)
+        ;
+
+        
+    
+    
+            circle_5db265a844d53238326e8e58592e90a8.bindTooltip(
+                `<div>
+                     UNIVERSAL COATING INC.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_74faee09aef6ee2e225bdcfcc690949e = L.circle(
+                [43.0067, -83.649],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1003.8596812489393, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_aedba6a9e0851e9e42671ad79db4f7a5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_640d908039ecba473efe21e6e43ee762 = $(`<div id="html_640d908039ecba473efe21e6e43ee762" style="width: 100.0%; height: 100.0%;">RAINBOW COATINGS OF MICHIGAN, 0.02816 tons</div>`)[0];
+                popup_aedba6a9e0851e9e42671ad79db4f7a5.setContent(html_640d908039ecba473efe21e6e43ee762);
+            
+        
+
+        circle_74faee09aef6ee2e225bdcfcc690949e.bindPopup(popup_aedba6a9e0851e9e42671ad79db4f7a5)
+        ;
+
+        
+    
+    
+            circle_74faee09aef6ee2e225bdcfcc690949e.bindTooltip(
+                `<div>
+                     RAINBOW COATINGS OF MICHIGAN
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b4ae60035525eedb6db9db7731e97a59 = L.circle(
+                [42.8206, -83.7044],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000.3968474738787, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_d4724216845eec84e627e13a39b64f57 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_64296a9af9ab5d62f60c2315897162ba = $(`<div id="html_64296a9af9ab5d62f60c2315897162ba" style="width: 100.0%; height: 100.0%;">Domico Med-Device, 0.00291107 tons</div>`)[0];
+                popup_d4724216845eec84e627e13a39b64f57.setContent(html_64296a9af9ab5d62f60c2315897162ba);
+            
+        
+
+        circle_b4ae60035525eedb6db9db7731e97a59.bindPopup(popup_d4724216845eec84e627e13a39b64f57)
+        ;
+
+        
+    
+    
+            circle_b4ae60035525eedb6db9db7731e97a59.bindTooltip(
+                `<div>
+                     Domico Med-Device
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_760b0f66ae1e5893fee6ce0346e5bdf2 = L.circle(
+                [43.1431, -83.7958],
+                {"bubblingMouseEvents": true, "color": "#57db94", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#57db94", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000.3240148904023, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_1a5e222fbb5db1d5f1cc7f928a0bc914 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_03e9956a398a5b65db358cbb1f729ed8 = $(`<div id="html_03e9956a398a5b65db358cbb1f729ed8" style="width: 100.0%; height: 100.0%;">CAGNEY, 0.002380018 tons</div>`)[0];
+                popup_1a5e222fbb5db1d5f1cc7f928a0bc914.setContent(html_03e9956a398a5b65db358cbb1f729ed8);
+            
+        
+
+        circle_760b0f66ae1e5893fee6ce0346e5bdf2.bindPopup(popup_1a5e222fbb5db1d5f1cc7f928a0bc914)
+        ;
+
+        
+    
+    
+            circle_760b0f66ae1e5893fee6ce0346e5bdf2.bindTooltip(
+                `<div>
+                     CAGNEY
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eaf063299d78aa002ab6317b9e692ebb = L.circle(
+                [43.0066, -83.6507],
+                {"bubblingMouseEvents": true, "color": "#5784db", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#5784db", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000.2014571981595, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_073d1bad7a1000dfa397739d302c4804 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_589d521d5446f26a0d34195963971148 = $(`<div id="html_589d521d5446f26a0d34195963971148" style="width: 100.0%; height: 100.0%;">Ground Effects, LLC, 0.0014864 tons</div>`)[0];
+                popup_073d1bad7a1000dfa397739d302c4804.setContent(html_589d521d5446f26a0d34195963971148);
+            
+        
+
+        circle_eaf063299d78aa002ab6317b9e692ebb.bindPopup(popup_073d1bad7a1000dfa397739d302c4804)
+        ;
+
+        
+    
+    
+            circle_eaf063299d78aa002ab6317b9e692ebb.bindTooltip(
+                `<div>
+                     Ground Effects, LLC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_c5691fab572d3e8facaca0bb797c8cd2 = L.circle(
+                [43.086, -83.6728],
+                {"bubblingMouseEvents": true, "color": "#db579e", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#db579e", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000.0, "stroke": true, "weight": 3}
+            ).addTo(map_9472df94199318c3c5f1f6ef7e61a73c);
+        
+    
+        var popup_3856905d307f02d388c17a03c57e8c5e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5fb948167d9e5b1b53c37a45ee526ead = $(`<div id="html_5fb948167d9e5b1b53c37a45ee526ead" style="width: 100.0%; height: 100.0%;">Buckeye Terminals, LLC - Flint Terminal, 1.74936e-05 tons</div>`)[0];
+                popup_3856905d307f02d388c17a03c57e8c5e.setContent(html_5fb948167d9e5b1b53c37a45ee526ead);
+            
+        
+
+        circle_c5691fab572d3e8facaca0bb797c8cd2.bindPopup(popup_3856905d307f02d388c17a03c57e8c5e)
+        ;
+
+        
+    
+    
+            circle_c5691fab572d3e8facaca0bb797c8cd2.bindTooltip(
+                `<div>
+                     Buckeye Terminals, LLC - Flint Terminal
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
