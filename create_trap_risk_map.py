@@ -27,7 +27,8 @@ template = """
     ">
     <p><a style="color:#808080;font-size:150%;">Legend</a></p>
     <p><a style="color:#0000FF;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;Zip code boundaries</p>
-    <p><a style="color:#008000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
+    <p><a style="color:#008000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;500m Zone</p>
+    <p><a style="color:#DC9E00;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
     <p><a style="color:#FF0000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;150m Zone</p>
 </div>
 {% endmacro %}
@@ -37,6 +38,7 @@ macro = MacroElement()
 macro._template = Template(template)
 map.get_root().add_child(macro)
 
+buffer_500m = road_gs.buffer(500)
 buffer_300m = road_gs.buffer(300)
 buffer_150m = road_gs.buffer(150)
 
@@ -56,11 +58,21 @@ zip_code_layer = folium.GeoJson(
     ).add_to(map)
 
 outer_area_layer = folium.GeoJson(
+    buffer_500m,
+    name='500m Zone', 
+    style_function=lambda feature: {
+        'color': '#008000',
+        'fillOpacity': 0.4,
+        'weight': 0.5
+    }
+).add_to(map)
+
+middle_area_layer = folium.GeoJson(
     buffer_300m,
     name='300m Zone', 
     style_function=lambda feature: {
-        'color': '#008000',
-        'fillOpacity': 0.3,
+        'color': '#DC9E00',
+        'fillOpacity': 0.5,
         'weight': 0.5
     }
 ).add_to(map)
@@ -77,4 +89,4 @@ inner_area_layer = folium.GeoJson(
 
 folium.LayerControl().add_to(map)
 
-map.save(r"C:\Users\tuann\github\esl_scripts\output\trap_map_40.html")
+map.save(r"C:\Users\tuann\github\esl_scripts\output\trap_map_2.html")
