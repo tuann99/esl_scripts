@@ -80,7 +80,7 @@ def create_style_function(color):
         }
     return style_function
 
-def create_map_final(map, road_gs, name, dir):
+def create_map_final(map, area, road_gs, name, dir):
     """
     Description:
     Creates a geographical data frame, merges road coordinates to create a single road
@@ -88,6 +88,7 @@ def create_map_final(map, road_gs, name, dir):
 
     Parameters:
     map: Folium map base
+    area: The path of the GeoJSON file containing border data
     road_json_path: The path to the json file containing the geographical info for roads
     name: Name for the output file
     dir: Output directory
@@ -109,7 +110,7 @@ def create_map_final(map, road_gs, name, dir):
             font-size:14px;
             ">
             <p><a style="color:#808080;font-size:150%;">Legend</a></p>
-            <p><a style="color:#0000FF;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;Zip code boundaries</p>
+            <p><a style="color:#0000FF;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;Area Boundaries</p>
             <p><a style="color:#008000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;500m Zone</p>
             <p><a style="color:#DC9E00;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
             <p><a style="color:#FF0000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;150m Zone</p>
@@ -119,6 +120,20 @@ def create_map_final(map, road_gs, name, dir):
         macro = MacroElement()
         macro._template = Template(template)
         map.get_root().add_child(macro)
+
+        if folium.GeoJson(
+            area,
+            name='Area Boundaries',
+            style_function=create_style_function('#0000FF'),
+            tooltip=folium.GeoJsonTooltip(
+                fields=['LABEL'],
+                localize=True
+            )
+        ).add_to(map):
+            print("Area boundaries added to map")
+        else:
+            raise Exception("Area boundaries could not be added to map")
+                
 
         buffers = [500, 300, 150]
         colors = ['#008000', '#DC9E00', '#FF0000']
@@ -174,6 +189,7 @@ def main():
         parser.add_argument("-i", "--input_json", type=str, help="Path of the JSON file containing road data.")
         parser.add_argument("-n", "--output_name", type=str, default=defaults["output_name"], help="The name the user wants for their map.")
         parser.add_argument("-o", "--output_directory", type=str, default=defaults["output_directory"], help="The directory the user wants to save their map to.")
+        parser.add_argument("-a", "--area", type=str, help="Path of the GeoJSON file containing border data.")
         
         args = parser.parse_args()
         args_dict = vars(args)
@@ -186,7 +202,7 @@ def main():
         print("Creating map...")    
         map = create_map_base(args.latitude, args.longitude)
         road_gs = create_df_and_format(args.input_json)
-        create_map_final(map, road_gs, args.output_name, args.output_directory)
+        create_map_final(map, args.area, road_gs, args.output_name, args.output_directory)
         print("Map created successfully")
     except Exception as e:
         print(f"An error occurred: {e}")
