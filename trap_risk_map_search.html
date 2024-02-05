@@ -19,23 +19,21 @@
             top: 0.0%;
         }
         .leaflet-container { font-size: 1rem; }
-        </style>
-
-
-    <style>
-    .foliumtooltip {
         
-    }
-    .foliumtooltip table{
-        margin: auto;
-    }
-    .foliumtooltip tr{
-        text-align: left;
-    }
-    .foliumtooltip th{
-        padding: 2px; padding-right: 8px;
-    }
+        .foliumtooltip {
+            
+        }
+        .foliumtooltip table{
+            margin: auto;
+        }
+        .foliumtooltip tr{
+            text-align: left;
+        }
+        .foliumtooltip th{
+            padding: 2px; padding-right: 8px;
+        }
     </style>
+
     <script>
         L_NO_TOUCH = false;
         L_DISABLE_3D = false;
@@ -50,17 +48,34 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+    <style>
+        #search {
+            position: fixed;
+            top: 5vh;
+            left: 5vw;
+            z-index:9999;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid black;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            min-width: 100vw;
+        }
+        .folium-map {
+            flex: 4;
+        }
+        
+    </style>
 </head>
 <body>
-    <div class="container" style="
-        display: flexbox; 
-        height: 100vh;
-        min-width: 100vw;
-        ">
+    <div class="container">
         <div class="folium-map" id="map_b050d8bf79c9302e69199415b6cac5ef" style="flex: 4;"></div>
 
-        <div style="
+        <div id="legend"style="
             position: fixed;
             top: 5vh;
             left: 5vw;
@@ -74,11 +89,9 @@
             <p><a style="color:#008000;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;500m Zone</p>
             <p><a style="color:#DC9E00;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
             <p><a style="color:#FF0000;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;150m Zone</p>
-            
-            
         </div>
         
-        <div style="
+        <div id="search-container" style="
             flex: 1;
             padding: 10px;
             z-index:9999;
