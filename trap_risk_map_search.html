@@ -78,8 +78,8 @@
     
     <div id="search-bar" style="
         position: fixed; 
-        top: 5vh;
-        right: 5vw;
+        top: 25vh;
+        left: 5vw;
         padding: 10px;
         padding-right: 10px;
         z-index:9999;
@@ -88,17 +88,6 @@
         ">
         <input type="text" id="address" placeholder="Enter an address">
         <button onclick="searchAddress()">Search</button>
-    </div>
-    <div id="result" style="
-        position: fixed; 
-        top: 10vh;
-        right: 5vw;
-        padding: 10px;
-        padding-right: 10px;
-        z-index:9999;
-        background-color: #ffffff;
-        font-size:14px;
-        ">
     </div>
 
 </body>
@@ -125,7 +114,7 @@
     function geo_json_cfee6e98a676c6ad1762d132794b4df5_styler(feature) {
         switch(feature.properties.OBJECTID) {
             default:
-                return {"color": "#0000FF", "fillOpacity": 0.4, "weight": 0.5};
+                return {"color": "#0000FF", "fillOpacity": 0.1, "weight": 0.5};
         }
     }
 
@@ -282,20 +271,38 @@
         ).addTo(map_b050d8bf79c9302e69199415b6cac5ef);
         
     function determineZone(latitude, longitude) {
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         var point = turf.point([longitude, latitude]);
-        zone_150_coordinates = zone_150m.features.geometry.coordinates[0];
-        console.log(zone_150_coordinates.head(5));
-        const zone_150_poly = turf.polygon([zone_150_coordinates]);
+        console.log(`point: ${point}`);
 
-        if (turf.booleanPointInPolygon(point, zone_150_poly)) {
-            return '150m';
-        } else {
-            return 'Outside of defined zones';
-        }};
+        var zones = [zone_150m, zone_300m, zone_500m];
+        var distances = [150, 300, 500];
+        var results = {};
 
-    function addMarker(address, latitude, longitude, status) {
+        zones.forEach(function(zone, index) {
+            var firstFeature = zone.features[0];
+            var coordinates = firstFeature.geometry.coordinates;
+            var polygon = turf.polygon(coordinates);
+            var isInside = turf.booleanPointInPolygon(point, polygon);
+
+            results[`zone_${distances[index]}m`] = isInside;
+        });
+        console.log(results);
+    };
+
+    function addMarker(address, latitude, longitude, results) {
         var marker = L.marker([latitude, longitude]).addTo(map_b050d8bf79c9302e69199415b6cac5ef);
-        marker.bindPopup('Address: '+ address + '<br>Latitude: ' + latitude + '<br>Longitude: ' + longitude + '<br>Within any zones: ' + status).openPopup();
+        var zones = '';
+        for (var zone in results) {
+            if (results[zone]) {
+                zones += zone + ', ';
+            }
+            if (results[zone] === false) {
+                zones = 'None';
+            }
+        }
+
+        marker.bindPopup('Address: '+ address + '<br>Latitude: ' + latitude + '<br>Longitude: ' + longitude + '<br>Within zones: ' + zones).openPopup();
     }
 
     function geocodeAddress(address) {
@@ -308,7 +315,7 @@
         // var url = `http://localhost:3000/?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
         console.log(url);
         
-        // 1441 Sunnyside Ave Flint MI 48503
+
         const getJSON = async url => {
             try {
                 const response = await fetch(url);
@@ -331,25 +338,22 @@
                 const latitude = data.result.addressMatches[0].coordinates.y;
 
                 console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-                let point = turf.point([longitude, latitude]);
-                // console.log(Object.keys(zone_150m));
-                // console.log(Object.keys(zone_150m.features[0]));
-                
-                var firstFeature = zone_150m.features[0];
-                var zone_150_coordinates = firstFeature.geometry.coordinates;
-                let polygon = turf.polygon(zone_150_coordinates);
-                console.log(zone_150_coordinates);
-                let isInside = turf.booleanPointInPolygon(point, polygon);
-                console.log(isInside);
+                var point = turf.point([longitude, latitude]);
+                var zones = [zone_150m, zone_300m, zone_500m];
+                var distances = [150, 300, 500];
+                var results = {};
 
-                addMarker(rawAddress, latitude, longitude, isInside);
-                // var zone_150_coordinates = zone_150m.features.geometry.coordinates[0];
-                // console.log(zone_150_coordinates);
-                
-                // var zone = determineZone(latitude, longitude);
-                // addMarker(latitude, longitude);
-                
-                // document.getElementById('result').innerHTML += '<tr><td>' + address + '</td><td>' + zone + '</td></tr>';
+                zones.forEach(function(zone, index) {
+                    var firstFeature = zone.features[0];
+                    var coordinates = firstFeature.geometry.coordinates;
+                    var polygon = turf.polygon(coordinates);
+                    var isInside = turf.booleanPointInPolygon(point, polygon);
+
+                    results[`zone_${distances[index]}m`] = isInside;
+                });
+                console.log(results);
+                addMarker(rawAddress, latitude, longitude, results);
+
             } else {
                 alert('No matches found for this address');
             }
@@ -358,8 +362,24 @@
 
     function searchAddress() {
         var address = document.getElementById('address').value;
-        geocodeAddress(address);
+        if (address === '') {
+            alert('Please enter an address');
+            return;
+        }
+        else {
+            console.log(`Address: ${address}`);
+            geocodeAddress(address);
+        }
     }
 
 </script>
 </html>
+
+// test addresses
+// all 3 zones
+// 1227 Cleveland Ave, Flint, MI 48503
+// 500m and 300m
+// 1318 Cleveland Ave, Flint, MI 48503
+// 500m
+// 1513 E Hamilton Ave, Flint, MI 48506
+// 
