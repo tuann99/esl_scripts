@@ -4,13 +4,42 @@
     
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-    
+
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        #map_b050d8bf79c9302e69199415b6cac5ef {
+            position: relative;
+            width: 100.0%;
+            height: 100.0%;
+            left: 0.0%;
+            top: 0.0%;
+        }
+        .leaflet-container { font-size: 1rem; }
+        </style>
+
+
+    <style>
+    .foliumtooltip {
+        
+    }
+    .foliumtooltip table{
+        margin: auto;
+    }
+    .foliumtooltip tr{
+        text-align: left;
+    }
+    .foliumtooltip th{
+        padding: 2px; padding-right: 8px;
+    }
+    </style>
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -21,73 +50,63 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_b050d8bf79c9302e69199415b6cac5ef {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-        
-    
-                    <style>
-                        .foliumtooltip {
-                            
-                        }
-                       .foliumtooltip table{
-                            margin: auto;
-                        }
-                        .foliumtooltip tr{
-                            text-align: left;
-                        }
-                        .foliumtooltip th{
-                            padding: 2px; padding-right: 8px;
-                        }
-                    </style>
-            
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>     
 </head>
 <body>
-    
-    
-    <div class="folium-map" id="map_b050d8bf79c9302e69199415b6cac5ef" ></div>
-    
+    <div class="container" style="
+        display: flexbox; 
+        height: 100vh;
+        min-width: 100vw;
+        ">
+        <div class="folium-map" id="map_b050d8bf79c9302e69199415b6cac5ef" style="flex: 4;"></div>
 
-    <div style="
-        position: fixed; 
-        top: 5vh;
-        left: 5vw;
-        padding: 10px;
-        padding-right: 10px;
-        z-index:9999;
-        background-color: #ffffff;
-        font-size:14px;
-        ">
-        <p><a style="color:#808080;font-size:150%;">Legend</a></p>
-        <p><a style="color:#0000FF;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;Area Boundaries</p>
-        <p><a style="color:#008000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;500m Zone</p>
-        <p><a style="color:#DC9E00;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
-        <p><a style="color:#FF0000;font-size:150%;margin-left:20px;">&#9679;</a>&emsp;150m Zone</p>
-    </div>
-    
-    <div id="search-bar" style="
-        position: fixed; 
-        top: 25vh;
-        left: 5vw;
-        padding: 10px;
-        padding-right: 10px;
-        z-index:9999;
-        background-color: #ffffff;
-        font-size:14px;
-        ">
-        <input type="text" id="address" placeholder="Enter an address">
-        <button onclick="searchAddress()">Search</button>
+        <div style="
+            position: fixed;
+            top: 5vh;
+            left: 5vw;
+            z-index:9999;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid black;
+            ">
+            <p><a style="color:#808080;font-size:115%;">Legend</a></p>
+            <p><a style="color:#0000FF;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;Area Boundaries</p>
+            <p><a style="color:#008000;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;500m Zone</p>
+            <p><a style="color:#DC9E00;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;300m Zone</p>
+            <p><a style="color:#FF0000;font-size:115%;margin-left:20px;">&#9679;</a>&emsp;150m Zone</p>
+            
+            
+        </div>
+        
+        <div style="
+            flex: 1;
+            padding: 10px;
+            z-index:9999;
+            background-color: #f2f2f2;
+            font-size:14px;
+            ">
+            <div id="search">
+                <input type="text" id="address" placeholder="Enter an address" style="
+                width: 80%; 
+                padding: 10px; 
+                border: none; 
+                border-radius: 5px; 
+                box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
+                ">
+                <button onclick="searchAddress()" style="
+                width: 15%; 
+                margin-left: 5%; 
+                padding: 10px; 
+                border: none; 
+                border-radius: 5px; 
+                background-color: #008CBA; 
+                color: white; 
+                cursor: pointer;
+                ">Search</button>
+            </div>
+            
+            <div id="results"></div>
+        </div>
     </div>
 
 </body>
@@ -293,16 +312,55 @@
     function addMarker(address, latitude, longitude, results) {
         var marker = L.marker([latitude, longitude]).addTo(map_b050d8bf79c9302e69199415b6cac5ef);
         var zones = '';
+        var isInAnyZone = false;
+
         for (var zone in results) {
             if (results[zone]) {
                 zones += zone + ', ';
-            }
-            if (results[zone] === false) {
-                zones = 'None';
+                isInAnyZone = true;
             }
         }
 
+        if (!isInAnyZone) {
+            zones = 'None';
+        } else {
+            zones = zones.slice(0, -2);
+        }
+
         marker.bindPopup('Address: '+ address + '<br>Latitude: ' + latitude + '<br>Longitude: ' + longitude + '<br>Within zones: ' + zones).openPopup();
+
+        createTable([{address: address, zones: zones}]);
+    }
+
+    function createTable(data) {
+        var resultsDiv = document.getElementById('results');
+        resultsDiv.style.maxWidth = '100%'
+        var table = document.createElement('table');
+        var headerRow = document.createElement('tr');
+        var addressHeader = document.createElement('th');
+        addressHeader.textContent = 'Address';
+        var zonesHeader = document.createElement('th');
+        zonesHeader.textContent = 'Zones';
+        headerRow.appendChild(addressHeader);
+        headerRow.appendChild(zonesHeader);
+        table.appendChild(headerRow);
+
+        for (var i = 0; i < data.length; i++) {
+            var row = document.createElement('tr');
+            var addressCell = document.createElement('td');
+            addressCell.textContent = data[i].address;
+            addressCell.style.wordWrap = 'break-word';
+
+            var zonesCell = document.createElement('td');
+            zonesCell.textContent = data[i].zones;
+
+            row.appendChild(addressCell);
+            row.appendChild(zonesCell);
+
+            table.appendChild(row);
+    }
+
+    resultsDiv.appendChild(table);
     }
 
     function geocodeAddress(address) {
@@ -310,14 +368,8 @@
         var formattedAddress = address.replace(/ /g, '+');
         console.log(formattedAddress);
 
-        // https://cors-anywhere.herokuapp.com/
-        // var url = `https://sleepy-temple-99901-13c25f46c133.herokuapp.com/https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
         var url = `https://web-production-6c43.up.railway.app/https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
-        
-        // var url = `http://localhost:8080/https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
-        // var url = `http://localhost:3000/?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
         console.log(url);
-        
 
         const getJSON = async url => {
             try {
@@ -377,12 +429,3 @@
 
 </script>
 </html>
-
-// test addresses
-// all 3 zones
-// 1227 Cleveland Ave, Flint, MI 48503
-// 500m and 300m
-// 1318 Cleveland Ave, Flint, MI 48503
-// 500m
-// 1513 E Hamilton Ave, Flint, MI 48506
-// 
