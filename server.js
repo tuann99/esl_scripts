@@ -9,9 +9,6 @@ app.use('/', createProxyMiddleware({
     pathRewrite: (path, req) => {
         return '/geocoder/locations/onelineaddress' + path;
     },
-    // pathRewrite: {
-    //     '^/': '/geocoder/locations/onelineaddress',
-    // },
     onProxyReq: (proxyReq, req, res) => {
         const rewrittenPath = '/geocoder/locations/onelineaddress' + req.url;
         console.log('Request URL:', proxyReq.getHeader('host') + rewrittenPath);
