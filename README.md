@@ -14,15 +14,12 @@ This is a repo for scripts used in the lab for tasks such as data management and
 - **Instructions:**
    1. Download the data from the pDR. Refer to the SOP in 'Lab Protocols' for full instructions.
    2. Move the files to 'S:\ExposureScienceLab\Lead Dust\Data\pDR\new_files'.
-   3. Open the command prompt, type the following command, and press enter.
-      ```shell
-      python path\to\pdr_summary_stats_rlde.py
-      ```
+   3. Open the command prompt, type ```python path\to\pdr_summary_stats_rlde.py```, and press enter.
    4. Files will be saved in respective subject folders.
 - **Example:**
-   - ```shell
-     python C:\Users\nguye620\esl_scripts\pdr_summary_stats_rlde.py
-     ```
+```shell
+python C:\Users\nguye620\esl_scripts\pdr_summary_stats_rlde.py
+```
 
 ### pdr_summary_stats_general.py
 - **Description:**
@@ -33,13 +30,10 @@ This is a repo for scripts used in the lab for tasks such as data management and
    - Modules:
 - **Instructions:**
    1. Download the data.
-   2. If using the default directories, move the files to 'C:\Users\user_name\esl_scripts\input'. Else, move to step 3.
-   3. Open the command prompt, type the following command, and press enter.
-   - ```shell
-      python C:\Users\user_name\esl_scripts\pdr_summary_stats_general.py
-      ```
-   - 'user_name' should be filled in with user's username. This can be found by typing into command prompt 'whoami'
-   4. Files will be saved in 'C:\Users\user_name\esl_scripts\output'.
+   1. If using the default directories, move the files to ```C:\Users\user_name\esl_scripts\input```. Else, move to step 3.
+   1. Open the command prompt, type ```python C:\Users\user_name\esl_scripts\pdr_summary_stats_general.py```, and press enter.
+*Note: 'user_name' should be filled in with user's username. This can be found by typing into command prompt 'whoami'*
+   1. Files will be saved in ```C:\Users\user_name\esl_scripts\output```.
 - **Example without specific directories:**
    - ```shell
      python C:\Users\nguye620\esl_scripts\pdr_summary_stats_general.py
