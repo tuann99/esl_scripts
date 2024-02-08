@@ -2,8 +2,7 @@
 **Creator:** Tuan N.
 
 ## Description
-This document contains instructions for running various scripts for data extraction, analysis, and visualization. Users should clone the repo to 
-'C:\Users\user_name\' to be able to use the scripts as they are.
+This is a repo for scripts used in the lab for tasks such as data management and visualization.
 
 ## Scripts Available
 ### pdr_summary_stats_rlde.py
