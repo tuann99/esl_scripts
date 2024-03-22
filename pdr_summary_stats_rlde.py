@@ -49,8 +49,8 @@ import regex as re
 import shutil
 
 # variables
-DEFAULT_INPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR\\new_files"
-DEFAULT_OUTPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR"
+DEFAULT_INPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust (rlde,hud)\\Data\\pDR\\new_files"
+DEFAULT_OUTPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust (rlde,hud)\\Data\\pDR"
 CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
 PDR_NUM_DICT = {
     "0115250158": "pdr_1",
