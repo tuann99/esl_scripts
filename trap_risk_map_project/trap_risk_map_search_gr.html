@@ -31,6 +31,7 @@
 
             body {
                 background-color: #fff;
+                
             }
             
             .container {
@@ -38,8 +39,9 @@
                 background-color: #18453B;
                 display: flex;
                 flex-direction: column;
-                min-height: 100vh;
+                height: auto;
                 min-width: 100vw;
+                min-height: 100vh;
                 overflow-y: scroll;
             }
             
@@ -398,12 +400,14 @@
         createTable([{address: address, zones: zones}]);
     }
 
+    
+
     function createTable(data) {
         var resultsDiv = document.getElementById('results');
-        var table = document.createElement('table');
-        var headers = document.getElementsByTagName('th')
-        
-        if (headers.length === 0) {
+        var table = resultsDiv.getElementsByTagName('table')[0];
+
+        if (!table) {
+            table = document.createElement('table');
             var headerRow = document.createElement('tr');
             var addressHeader = document.createElement('th');
             var zonesHeader = document.createElement('th');
@@ -412,6 +416,7 @@
             headerRow.appendChild(addressHeader);
             headerRow.appendChild(zonesHeader);
             table.appendChild(headerRow);
+            resultsDiv.appendChild(table);
         }
 
         for (var i = 0; i < data.length; i++) {
@@ -429,7 +434,6 @@
             table.appendChild(row);
         }
 
-        resultsDiv.appendChild(table);
         resultsDiv.style.display = 'block';
     }
 

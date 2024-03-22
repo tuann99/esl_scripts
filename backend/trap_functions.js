@@ -95,3 +95,41 @@ function searchAddress() {
     var address = document.getElementById('address').value;
     geocodeAddress(address);
 }
+
+// Notes
+// position: fixed;
+//             top: 25vh;
+//             left: 5vw;
+
+// test addresses
+// all 3 zones
+// 1227 Cleveland Ave, Flint, MI 48503
+// 500m and 300m
+// 1318 Cleveland Ave, Flint, MI 48503
+// 500m
+// 1513 E Hamilton Ave, Flint, MI 48506
+// None
+// 818 E Gillespie Ave, Flint, MI 48505
+
+// function addMarker(address, latitude, longitude, results) {
+    //     var marker = L.marker([latitude, longitude]).addTo(map_b050d8bf79c9302e69199415b6cac5ef);
+    //     var zones = '';
+    //     for (var zone in results) {
+    //         if (results[zone]) {
+    //             zones += zone + ', ';
+    //         }
+    //         if (results[zone] === false) {
+    //             zones = 'None';
+    //         }
+    //     }
+
+    //     marker.bindPopup('Address: '+ address + '<br>Latitude: ' + latitude + '<br>Longitude: ' + longitude + '<br>Within zones: ' + zones).openPopup();
+    // }
+
+// Hosting on Heroku
+        // var url = `https://sleepy-temple-99901-13c25f46c133.herokuapp.com/https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
+
+        // Localhost
+        // var url = `http://localhost:8080/https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=${formattedAddress}&benchmark=2020&format=json&key=78b4381afeb5c414911e858cb258011f812052f3`;
+
+// Hosting on Railway
