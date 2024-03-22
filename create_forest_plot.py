@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-export_path = r"S:\ExposureScienceLab\PM Cognitive\Meta-analysis\plots\python_plots"
+export_path = r"S:\ExposureScienceLab\PM Cognitive\Meta-analysis\plots\python_plots\20240321"
 xlsx_path = r"S:\ExposureScienceLab\PM Cognitive\Meta-analysis\stats\stats.xlsx"
 # sheet = "python"
 # sheet = "python2"
@@ -31,9 +31,9 @@ def format_data(df):
     # df["n"] = df["n"].round(0)
     # df["Relative Weight (%)"] = df["Relative Weight (%)"].round(4)
 
-    df["ll"] = df["ll"].round(2)
-    df["ul"] = df["ul"].round(2)
-    df["corr"] = df["corr"].round(2)
+    df["ll"] = df["ll"].round(4)
+    df["ul"] = df["ul"].round(4)
+    df["corr"] = df["corr"].round(4)
     df["CI"] = df["corr"].astype(str) + " (" + df["ll"].astype(str) + ", " + df["ul"].astype(str) + ")"
     df["study_name"] = df["study_name"].astype(str)
     if "group" in df.columns:

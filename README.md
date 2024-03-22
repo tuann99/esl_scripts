@@ -31,13 +31,13 @@ This is a repo for scripts used in the lab for tasks such as data management and
 - **Requirements**
    - Python
    - Modules: Available inside ```/venv_requirements/trap-map-env.txt```
-   - Data with the following columns: 'SITE NAME', 'Facility Type', 'Emissions (Tons)', 'Latitude', 'Longitude', 'State-County'
+   - Data 
 - **Instructions**
    1. Download the data from the EPA NEI as an ```xlsx``` file.
    2. Note the path the data was downloaded to.
    3. Open the command prompt, and type ```python path/to/create_emissions_map.py -i <input_xlsx_path> -o <output_dir>```, where ```path/to/create_emissions_map.py``` is the path to the ```create_emissions_map.py``` script, ```<input_xlsx_path>``` is the path to the EPA NEI data, and ```<output_dir>``` is the directory you want the output ```html``` file to be saved.
 - **Example**
-```python .\create_emissions_map.py -i "C:\Users\nguye620\esl_scripts\input\Kent Facility Data Emissions.xlsx" -o C:\Users\nguye620\esl_scripts\output -c "MI - Kent"```
+```python .\create_trap_risk_map.py -lat -i "C:\Users\nguye620\esl_scripts\input\Kent Facility Data Emissions.xlsx" -o C:\Users\nguye620\esl_scripts\output -c "MI - Kent"```
 - **Notes**
    - If "Usecols do not match columns, columns expected but not found: ['SITE NAME'] (sheet: 0)" error occurs, open the xlsx file and ensure the column name for site name has only one space between SITE and NAME (i.e. 'SITE NAME', not 'SITE  NAME')
 
