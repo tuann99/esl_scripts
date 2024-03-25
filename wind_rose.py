@@ -395,6 +395,6 @@ weighted_df = get_weighted_dir(wind_dir_data_daily, wind_speed_data_daily)
 # print(weighted_df)
 
 output_dir = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\output"
-export_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\export\flint_windrose.xlsx"        
+export_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\output\flint_windrose.xlsx"        
 aaa = create_windrose(weighted_df, pm_data_daily, output_dir, export_path)
 # tmp = create_windrose(weighted_df, pm_ctrl_data_daily)
