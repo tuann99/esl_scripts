@@ -1056,3 +1056,202 @@ map.save(r'S:\ExposureScienceLab\Flint Maternal Health Study\windrose\output\fli
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
+
+# Can you please identify daily PM2.5 concentrations for 2021 and 2022 that are above the new NAAQS (9 ug/m3) and 
+# investigate which wind directions most of those elevated PM2.5 days were coming from?
+# get count of days above 9 ug/m3 for each direction in 2021 and 2022
+
+def create_counts_windrose(df_1, df_2=None, year=None):
+    counts_df = pd.DataFrame()
+    for direction in df_1['weighted_direction_str (blowing from)'].unique():
+        x = direction_to_radians(direction)
+        row = pd.Series({
+            'Direction': direction,
+            'Direction (Radians)': x,
+            'Counts': df_1[df_1['weighted_direction_str (blowing from)'] == direction]['count'].sum()
+        })
+        row_df = pd.DataFrame([row], columns=['Direction','Direction (Radians)','Counts'])
+        counts_df = pd.concat([counts_df, row_df], ignore_index=True)
+
+    formatted_df = format_combined_df(counts_df)
+    print(formatted_df)
+    direction = formatted_df['Direction (Radians)']
+    counts = formatted_df['Counts']
+    order = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+
+    fig, ax = plt.subplots(figsize=[8,7],subplot_kw={'projection': 'polar'})
+    ax.plot(direction, counts, color='red', linewidth=2)
+    ax.set_xticks(np.linspace(0, 2 * np.pi, 16, endpoint=False))
+    ax.set_xticklabels(order)
+    ax.set_rmax((max(counts) // 10 + 1) * 10)
+    ax.grid(True)
+    ax.set_theta_zero_location('N')
+    ax.set_theta_direction(-1)
+    
+    idx_max = formatted_df['Counts'].idxmax()
+    print(f"Index with highest counts: {idx_max}")
+    dir_with_highest_counts = float(formatted_df.loc[idx_max, 'Direction (Radians)'])
+    dir_with_highest_counts_degrees = np.degrees(dir_with_highest_counts)
+    ax.set_rlabel_position(dir_with_highest_counts_degrees)
+    
+    plt.title(f'Counts of days where PM2.5 was greater than 9ug/m3\nfor each cardinal direction in Flint in {year}', loc='center', pad=10)
+    plt.savefig(rf'S:\ExposureScienceLab\Flint Maternal Health Study\windrose\output\{year}_counts_windrose_with_table.png')
+    plt.show()
+
+    return None
+
+cols = ['State Code','County Code',
+        'Site Num','Parameter Name',
+        'Date Local','Time Local',
+        'Sample Measurement','Units of Measure'
+        ]
+
+pm_2021_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\hourly_88101_2021\hourly_88101_2021.csv"
+pm_2021_data = pd.read_csv(pm_2021_path, usecols=cols)
+pm_2021_data = pm_2021_data[(pm_2021_data['State Code'] == 26) & (pm_2021_data['County Code'] == 49) & (pm_2021_data['Site Num'] == 21) & (pm_2021_data['Sample Measurement'] > 9)]
+pm_2021_data['Sample Measurement'] = pd.to_numeric(pm_2021_data['Sample Measurement'], errors='coerce')
+pm_2021_data['Sample Measurement'] = pm_2021_data['Sample Measurement'].fillna(0)
+pm_2021_data['Sample Measurement'] = pm_2021_data['Sample Measurement'].astype(float)
+pm_2021_data_daily = pm_2021_data[['Date Local','Sample Measurement']]
+pm_2021_data_daily = pm_2021_data_daily.groupby('Date Local').mean()
+pm_2021_data_daily = pm_2021_data_daily.reset_index()
+print(pm_2021_data_daily)
+dates_to_use_2021 = pm_2021_data_daily['Date Local'].unique()
+
+wind_2021_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\hourly_WIND_2021\hourly_WIND_2021.csv"
+wind_2021_data = pd.read_csv(wind_2021_path, usecols=cols)
+wind_2021_data = wind_2021_data[(wind_2021_data['State Code'] == 26) & (wind_2021_data['County Code'] == 49) & (wind_2021_data['Site Num'] == 21) & (wind_2021_data['Date Local'].isin(dates_to_use_2021))]
+wind_dir_2021_data = wind_2021_data[wind_2021_data['Parameter Name'] == 'Wind Direction - Resultant']
+wind_speed_2021_data = wind_2021_data[wind_2021_data['Parameter Name'] == 'Wind Speed - Resultant']
+wind_dir_2021_data_daily = wind_dir_2021_data[['Date Local','Sample Measurement','Parameter Name', 'Time Local']]
+wind_speed_2021_data_daily = wind_speed_2021_data[['Date Local','Sample Measurement','Parameter Name', 'Time Local']]
+print(wind_dir_2021_data_daily)
+print(wind_speed_2021_data_daily)
+
+wind_speed_2021_data_daily.loc[:, 'Sample Measurement'] = wind_speed_2021_data_daily['Sample Measurement'] * 0.514444
+print(wind_speed_2021_data_daily)
+
+weighted_df_2021 = get_weighted_dir(wind_dir_2021_data_daily, wind_speed_2021_data_daily)
+print(weighted_df_2021)
+
+counts_2021 = weighted_df_2021['weighted_direction_str (blowing from)'].value_counts()
+counts_2021 = counts_2021.reset_index()
+total_days_over_9_in_2021 = len(pm_2021_data_daily)
+print(counts_2021)
+print(f"Total days over 9 ug/m3 in 2021: {total_days_over_9_in_2021}")
+
+create_counts_windrose(counts_2021, year='2021')
+
+# -------------------------------------------------------------------------------------------------------------------------- #
+
+pm_2022_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\pm_data_epa\hourly_88101_2022.csv"
+pm_2022_data_raw = pd.read_csv(pm_2022_path, usecols=cols)
+pm_2022_data = pm_2022_data_raw[(pm_2022_data_raw['State Code'] == 26) & (pm_2022_data_raw['County Code'] == 49) & (pm_2022_data_raw['Site Num'] == 21) & (pm_2022_data_raw['Sample Measurement'] > 9)]
+pm_2022_data['Sample Measurement'] = pd.to_numeric(pm_2022_data['Sample Measurement'], errors='coerce')
+pm_2022_data['Sample Measurement'] = pm_2022_data['Sample Measurement'].fillna(0)
+pm_2022_data['Sample Measurement'] = pm_2022_data['Sample Measurement'].astype(float)
+pm_2022_data_daily = pm_2022_data[['Date Local','Sample Measurement']]
+pm_2022_data_daily = pm_2022_data_daily.groupby('Date Local').mean()
+pm_2022_data_daily = pm_2022_data_daily.reset_index()
+print(pm_2022_data_daily)
+dates_to_use_2022 = pm_2022_data_daily['Date Local'].unique()
+print(dates_to_use_2022)
+
+wind_2022_path = r"S:\ExposureScienceLab\Flint Maternal Health Study\windrose\hourly_WIND_2022\hourly_WIND_2022.csv"
+wind_2022_data_raw = pd.read_csv(wind_2022_path, usecols=cols)
+wind_2022_data = wind_2022_data_raw[(wind_2022_data_raw['State Code'] == 26) & (wind_2022_data_raw['County Code'] == 49) & (wind_2022_data_raw['Site Num'] == 21) & (wind_2022_data_raw['Date Local'].isin(dates_to_use_2022))]
+wind_dir_2022_data = wind_2022_data[wind_2022_data['Parameter Name'] == 'Wind Direction - Resultant']
+wind_speed_2022_data = wind_2022_data[wind_2022_data['Parameter Name'] == 'Wind Speed - Resultant']
+wind_dir_2022_data_daily = wind_dir_2022_data[['Date Local','Sample Measurement','Parameter Name', 'Time Local']]
+wind_speed_2022_data_daily = wind_speed_2022_data[['Date Local','Sample Measurement','Parameter Name', 'Time Local']]
+print(wind_dir_2022_data_daily)
+print(wind_speed_2022_data_daily)
+
+wind_speed_2022_data_daily.loc[:, 'Sample Measurement'] = wind_speed_2022_data_daily['Sample Measurement'] * 0.514444
+print(wind_speed_2022_data_daily)
+
+weighted_df_2022 = get_weighted_dir(wind_dir_2022_data_daily, wind_speed_2022_data_daily)
+print(weighted_df_2022)
+
+counts_2022 = weighted_df_2022['weighted_direction_str (blowing from)'].value_counts()
+counts_2022 = counts_2022.reset_index()
+total_days_over_9_in_2022 = len(pm_2022_data_daily)
+print(counts_2022)
+print(f"Total days over 9 ug/m3 in 2022: {total_days_over_9_in_2022}")
+
+create_counts_windrose(counts_2022, year='2022')
+
+# -------------------------------------------------------------------------------------------------------------------------- #
+
+with pd.ExcelWriter('S:\\ExposureScienceLab\\Flint Maternal Health Study\\windrose\\output\\flint_windrose_data_export.xlsx') as writer:
+
+    pm_2021_data.to_excel(writer, sheet_name='PM2_5,2021,Hourly,over_9')
+    pm_2021_data_daily.to_excel(writer, sheet_name='PM2_5,2021,Daily,over_9')
+    wind_dir_2021_data_daily.to_excel(writer, sheet_name='Wind_Direction,2021,Daily')
+    wind_speed_2021_data_daily.to_excel(writer, sheet_name='Wind_Speed,2021,Daily')
+    weighted_df_2021.to_excel(writer, sheet_name='Weighted_Calculations,2021')
+    counts_2021.to_excel(writer, sheet_name='Counts,2021')
+    
+    pm_2022_data.to_excel(writer, sheet_name='PM2_5,2022,Hourly,over_9')
+    pm_2022_data_daily.to_excel(writer, sheet_name='PM2_5,2022,Daily,over_9')
+    wind_dir_2022_data_daily.to_excel(writer, sheet_name='Wind_Direction,2022,Daily')
+    wind_speed_2022_data_daily.to_excel(writer, sheet_name='Wind_Speed,2022,Daily')
+    weighted_df_2022.to_excel(writer, sheet_name='Weighted_Calculations,2022')
+    counts_2022.to_excel(writer, sheet_name='Counts,2022')
+
+# -------------------------------------------------------------------------------------------------------------------------- #
+
+def create_windrose_new(df_1, df_2=None, year=None):
+    counts_df = pd.DataFrame()
+    if df_2 is not None:
+        df = pd.merge(df_1, df_2, on='Date Local')
+        print('merge good')
+    else:
+        df = df_1
+
+    for direction in df['weighted_direction_str (blowing from)'].unique():
+        x = direction_to_radians(direction)
+        row = pd.Series({
+            'Direction': direction,
+            'Direction (Radians)': x,
+            'Daily Mean PM2.5': df[df['weighted_direction_str (blowing from)'] == direction]['Sample Measurement'].mean().round(4)
+        })
+        row_df = pd.DataFrame([row], columns=['Direction','Direction (Radians)','Daily Mean PM2.5'])
+        counts_df = pd.concat([counts_df, row_df], ignore_index=True)
+
+    formatted_df = format_combined_df(counts_df)
+    print(formatted_df)
+    direction = formatted_df['Direction (Radians)']
+    pm = formatted_df['Daily Mean PM2.5']
+    order = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+
+    fig, ax = plt.subplots(figsize=[8,7],subplot_kw={'projection': 'polar'})
+    ax.plot(direction, pm, color='red', linewidth=2)
+    ax.set_xticks(np.linspace(0, 2 * np.pi, 16, endpoint=False))
+    ax.set_xticklabels(order)
+    ax.set_rmax((max(pm) // 10 + 1) * 10)
+    ax.grid(True)
+    ax.set_theta_zero_location('N')
+    ax.set_theta_direction(-1)
+    ax.set_ylim([9, ax.get_ylim()[1]])
+    ax.set_rlabel_position(0)
+    
+    plt.title(f'Flint windrose of daily mean PM2.5\nonly including days where PM2.5 > 9 ug/m3 for {year}', loc='center', pad=10)
+    plt.savefig(rf'S:\ExposureScienceLab\Flint Maternal Health Study\windrose\output\{year}_conc_windrose.png')
+    plt.show()
+
+    return None
+
+create_windrose_new(weighted_df_2021, pm_2021_data_daily, year='2021')
+create_windrose_new(weighted_df_2022, pm_2022_data_daily, year='2022')
+
+# -------------------------------------------------------------------------------------------------------------------------- #
+
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
+############################################################################################################
