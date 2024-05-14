@@ -76,6 +76,7 @@ for target in targets:
         print(f"Directory '{target}' not found.")
     else:
         print(f"Directory found: {directory}")
+        break
 
 DEFAULT_RLDE_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
 DEFAULT_RLDE_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
