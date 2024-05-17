@@ -284,7 +284,7 @@ def pdr_summary_stats(input_directory, output_directory):
             else:
                 print(f"File \"{file}\" is empty. Please check the file and try again.")
 
-def pdr_summary_stats_rlde(input_directory, subject_folder):
+def pdr_summary_stats_rlde(input_directory, output_directory):
     for file in os.listdir(input_directory):
         if file.endswith(".txt"):
             
@@ -305,7 +305,7 @@ def pdr_summary_stats_rlde(input_directory, subject_folder):
                 break
 
             # create a folder for the subject ID if it doesn't exist
-            output_folder = os.path.join(subject_folder, subject_id)
+            output_folder = os.path.join(output_directory, subject_id)
             os.makedirs(output_folder, exist_ok=True)
 
             # copy file to correct subject folder
