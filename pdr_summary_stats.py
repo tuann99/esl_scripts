@@ -156,6 +156,32 @@ def find_directory(drives, target):
             return directory
     return None
 
+drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
+targets = ['CHM\\ExposureScienceLab\\Lead Dust (rlde,hud)', 'ExposureScienceLab\\Lead Dust (rlde,hud)', 'Lead Dust (rlde,hud)']
+
+for target in targets:
+    directory = find_directory(drives, target)
+    if directory is None:
+        print(f"Directory '{target}' not found.")
+    else:
+        print(f"Directory found: {directory}")
+        break
+
+DEFAULT_RLDE_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
+DEFAULT_RLDE_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
+CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
+PDR_NUM_DICT = {
+    "0115250158": "pdr_1",
+    "0115249628": "pdr_2",
+    "0115249629": "pdr_3",
+    "0115250156": "pdr_4",
+    # pdr 5
+    "CM19342019": "pdr_6",
+    # pdr 7
+    "CM21092015": "pdr_8",
+    "CM21102014": "pdr_9",
+}
+
 def pdr_summary_stats(input_directory, output_directory):
     '''
     Description:
@@ -345,31 +371,6 @@ def pdr_summary_stats_rlde(input_directory, subject_folder):
                 print(f"File {file} is empty. Please check the file and try again.")
 
 def main():
-    drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
-    targets = ['CHM\\ExposureScienceLab\\Lead Dust (rlde,hud)', 'ExposureScienceLab\\Lead Dust (rlde,hud)', 'Lead Dust (rlde,hud)']
-
-    for target in targets:
-        directory = find_directory(drives, target)
-        if directory is None:
-            print(f"Directory '{target}' not found.")
-        else:
-            print(f"Directory found: {directory}")
-            break
-
-    DEFAULT_RLDE_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
-    DEFAULT_RLDE_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
-    CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
-    PDR_NUM_DICT = {
-        "0115250158": "pdr_1",
-        "0115249628": "pdr_2",
-        "0115249629": "pdr_3",
-        "0115250156": "pdr_4",
-        # pdr 5
-        "CM19342019": "pdr_6",
-        # pdr 7
-        "CM21092015": "pdr_8",
-        "CM21102014": "pdr_9",
-    }
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
     script_path = pathlib.Path().resolve()
     default_input_directory = os.path.join(script_path, "input")
@@ -378,7 +379,9 @@ def main():
     parser.add_argument("-i", "--input_directory", type=str, default=default_input_directory, help="The directory containing the pDR txt files.")
     parser.add_argument("-o", "--output_directory", type=str, default=default_output_directory, help="The directory to save the output files to.")
     parser.add_argument("-r", "--rlde", action='store_true', help="Option for running on new RLDE data.")
+    
     args = parser.parse_args()
+    
     if args.rlde:
         # if the input/output dirs are still default, change it to the rlde ones
         args.input_directory = DEFAULT_RLDE_INPUT_DIRECTORY if args.input_directory == default_input_directory else args.input_directory 
