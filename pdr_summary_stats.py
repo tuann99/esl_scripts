@@ -13,21 +13,15 @@
 # Requirements:
 #  - Python 3.x
 #  - Required Python packages: pandas, openpyxl, regex
-#  - If using the script for the RLDE project, input data files must be in the ../Lead Dust/Data/pDR/new_files directory.
+#  - If using the script for the RLDE project, input data files must be in the "../Lead Dust/Data/pDR/new_files" directory.
 #  - Input data files should have a subject # in their file names formatted as 'Subject #' (Example: Subject 3).
 #  - pDR serial numbers and corresponding names must be specified in the PDR_NUM_DICT dictionary within the script.
 #
 # Usage:
-#  - If the data has been pulled off the pDR already, proceed to step 6, otherwise continue.
-#  1. Plug the pDR into the computer and open the pDR Port software.
-#  2. Click the "Data text" tab, then click the import icon (pdr with arrow pointing down).
-#  3. Select the correct files to import and then press x
-#  4. Ensure the folder you're importing to is "S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR\\new_files"
-#  5. Save the data with the correct subject ID in the file name. (Ex. Subject 1 Initial Aug 21-22 2023)
-#  6. On windows, open the command prompt and type:
-#     "python S:\ExposureScienceLab\scripts\pdr_summary_stats_rlde.py -i path\to\input_directory -o path\to\output_directory"
-#     where "path\to\input_directory" is the path to the directory containing the pDR txt files and "path\to\output_directory" is the 
-#     path to where you want the output files to be saved.
+#  - "python path\to\pdr_summary_stats.py"
+#  - There are optional flags for specifying an input directory ("-i path\to\input_directory"),
+#    specifying an output directory ("-o path\to\output_directory"),
+#    and specifying that the analysis will be for the RLDE project (-r). 
 #
 # Notes:
 #  - Data will be exported to the respective subject folder in the pDR folder.
@@ -224,7 +218,7 @@ def pdr_summary_stats(input_directory, output_directory):
                         print(f"Number of rows to skip: {info_row_count}.")
                         serial_num = line.split("Serial no.  \", ")[1].strip().replace('"', '')
                         tmp = pd.read_csv(file_path, sep=",", skiprows=info_row_count, header=None, names=CUSTOM_HEADERS)
-                        tmp["pdr name"] = pdr_num_dict[serial_num]
+                        tmp["pdr name"] = PDR_NUM_DICT[serial_num]
                         
                         # remove leading and trailing whitespace from all columns
                         for col in tmp.columns:  
@@ -372,9 +366,10 @@ def pdr_summary_stats_rlde(input_directory, output_directory):
 
 def main():
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
-    script_path = pathlib.Path().resolve()
-    default_input_directory = os.path.join(script_path, "input")
-    default_output_directory = os.path.join(script_path, "output")
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    default_input_directory = os.path.join(script_dir, "input")
+    default_output_directory = os.path.join(script_dir, "output")
+    print(f"script dir: {script_dir}")
     print(f'Default input dir: {default_input_directory}\nDefault output dir: {default_output_directory}')
     parser.add_argument("-i", "--input_directory", type=str, default=default_input_directory, help="The directory containing the pDR txt files.")
     parser.add_argument("-o", "--output_directory", type=str, default=default_output_directory, help="The directory to save the output files to.")
