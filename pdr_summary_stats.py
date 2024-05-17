@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ###########################################################################################################################################
 ###########################################################################################################################################
 # Michigan State University - Exposure Science Lab
@@ -11,8 +13,8 @@
 # Requirements:
 #  - Python 3.x
 #  - Required Python packages: pandas, openpyxl, regex
-#  - Input data files must be in the "new_files" directory within the specified input directory.
-#  - Input data files should have "Subject #" in their file names.
+#  - If using the script for the RLDE project, input data files must be in the ../Lead Dust/Data/pDR/new_files directory.
+#  - Input data files should have a subject # in their file names formatted as 'Subject #' (Example: Subject 3).
 #  - pDR serial numbers and corresponding names must be specified in the PDR_NUM_DICT dictionary within the script.
 #
 # Usage:
@@ -38,60 +40,18 @@
 ###########################################################################################################################################
 ###########################################################################################################################################
 
-#!/usr/bin/env python3
-
+# Need to be installed
+from openpyxl import Workbook
+from openpyxl.chart import LineChart, Reference 
 import pandas as pd
+import regex as re
+
+# Built into Python
 import os
 import string
 import argparse
-from openpyxl import Workbook
-from openpyxl.chart import LineChart, Reference 
-import regex as re
 import shutil
-
-def find_directory(drives, target):
-    '''
-    Description:
-        - Function for finding the directory of a particular target.
-
-    Parameters:
-        - drives (list) - The drive(s) formatted as 'Letter:\\' (Example: 'C:\\')
-        - target (str) - The name of the target folder 
-
-    Returns:
-        - Full directory path if it exists, or none if it doesn't
-    '''
-    for drive in drives:
-        directory = os.path.join(drive, target)
-        if os.path.exists(directory):
-            return directory
-    return None
-
-drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
-targets = ['CHM\\ExposureScienceLab\\Lead Dust (rlde,hud)', 'ExposureScienceLab\\Lead Dust (rlde,hud)', 'Lead Dust (rlde,hud)']
-
-for target in targets:
-    directory = find_directory(drives, target)
-    if directory is None:
-        print(f"Directory '{target}' not found.")
-    else:
-        print(f"Directory found: {directory}")
-        break
-
-DEFAULT_RLDE_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
-DEFAULT_RLDE_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
-CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
-PDR_NUM_DICT = {
-    "0115250158": "pdr_1",
-    "0115249628": "pdr_2",
-    "0115249629": "pdr_3",
-    "0115250156": "pdr_4",
-    # pdr 5
-    "CM19342019": "pdr_6",
-    # pdr 7
-    "CM21092015": "pdr_8",
-    "CM21102014": "pdr_9",
-}
+import pathlib
 
 def append_rows_to_sheet(sheet, df):
     '''
@@ -177,6 +137,24 @@ def create_summary_sheet(workbook_name, title, summary_stats_var_name):
     for row in summary_stats_list:
         sheet.append(row)
     return sheet
+
+def find_directory(drives, target):
+    '''
+    Description:
+        - Function for finding the directory of a particular target.
+
+    Parameters:
+        - drives (list) - The drive(s) formatted as 'Letter:\\' (Example: 'C:\\')
+        - target (str) - The name of the target folder 
+
+    Returns:
+        - Full directory path if it exists, or none if it doesn't
+    '''
+    for drive in drives:
+        directory = os.path.join(drive, target)
+        if os.path.exists(directory):
+            return directory
+    return None
 
 def pdr_summary_stats(input_directory, output_directory):
     '''
@@ -367,9 +345,35 @@ def pdr_summary_stats_rlde(input_directory, subject_folder):
                 print(f"File {file} is empty. Please check the file and try again.")
 
 def main():
+    drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
+    targets = ['CHM\\ExposureScienceLab\\Lead Dust (rlde,hud)', 'ExposureScienceLab\\Lead Dust (rlde,hud)', 'Lead Dust (rlde,hud)']
+
+    for target in targets:
+        directory = find_directory(drives, target)
+        if directory is None:
+            print(f"Directory '{target}' not found.")
+        else:
+            print(f"Directory found: {directory}")
+            break
+
+    DEFAULT_RLDE_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
+    DEFAULT_RLDE_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
+    CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
+    PDR_NUM_DICT = {
+        "0115250158": "pdr_1",
+        "0115249628": "pdr_2",
+        "0115249629": "pdr_3",
+        "0115250156": "pdr_4",
+        # pdr 5
+        "CM19342019": "pdr_6",
+        # pdr 7
+        "CM21092015": "pdr_8",
+        "CM21102014": "pdr_9",
+    }
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
-    default_input_directory = os.path.expanduser("~\\esl_scripts\\input")
-    default_output_directory = os.path.expanduser("~\\esl_scripts\\output")
+    script_path = pathlib.Path().resolve()
+    default_input_directory = os.path.join(script_path, "input")
+    default_output_directory = os.path.join(script_path, "output")
     print(f'Default input dir: {default_input_directory}\nDefault output dir: {default_output_directory}')
     parser.add_argument("-i", "--input_directory", type=str, default=default_input_directory, help="The directory containing the pDR txt files.")
     parser.add_argument("-o", "--output_directory", type=str, default=default_output_directory, help="The directory to save the output files to.")
