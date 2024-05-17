@@ -223,7 +223,7 @@ def pdr_summary_stats(input_directory, output_directory):
                         info_row_count = count_header_rows(output_txt_path, 'record')
                         print(f"Number of rows to skip: {info_row_count}.")
                         serial_num = line.split("Serial no.  \", ")[1].strip().replace('"', '')
-                        tmp = pd.read_csv(file_path, sep=",", skiprows=info_row_count, header=None, names=custom_headers)
+                        tmp = pd.read_csv(file_path, sep=",", skiprows=info_row_count, header=None, names=CUSTOM_HEADERS)
                         tmp["pdr name"] = pdr_num_dict[serial_num]
                         
                         # remove leading and trailing whitespace from all columns
@@ -249,11 +249,11 @@ def pdr_summary_stats(input_directory, output_directory):
                         summary_stats_no_outliers_zscore = tmp_no_outliers_zscore["ug/m3"].describe()
                         
                         # write the data to xlsx file
-                        data_sheet = create_sheet_with_headers(workbook, 'Data_raw', custom_headers)
-                        data_sheet_no_outliers_iqr = create_sheet_with_headers(workbook, 'Data_no_outliers_iqr', custom_headers)
-                        data_sheet_no_outliers_zscore = create_sheet_with_headers(workbook, 'Data_no_outliers_zscore', custom_headers)
-                        outliers_sheet_iqr = create_sheet_with_headers(workbook, 'Outliers_iqr', custom_headers)
-                        outliers_sheet_zscore = create_sheet_with_headers(workbook, 'Outliers_zscore', custom_headers)
+                        data_sheet = create_sheet_with_headers(workbook, 'Data_raw', CUSTOM_HEADERS)
+                        data_sheet_no_outliers_iqr = create_sheet_with_headers(workbook, 'Data_no_outliers_iqr', CUSTOM_HEADERS)
+                        data_sheet_no_outliers_zscore = create_sheet_with_headers(workbook, 'Data_no_outliers_zscore', CUSTOM_HEADERS)
+                        outliers_sheet_iqr = create_sheet_with_headers(workbook, 'Outliers_iqr', CUSTOM_HEADERS)
+                        outliers_sheet_zscore = create_sheet_with_headers(workbook, 'Outliers_zscore', CUSTOM_HEADERS)
 
                         append_rows_to_sheet(data_sheet, tmp)
                         append_rows_to_sheet(data_sheet_no_outliers_iqr, tmp_no_outliers_iqr)
