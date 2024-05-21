@@ -42,6 +42,7 @@
 
 import pandas as pd
 import os
+import string
 import argparse
 from openpyxl import Workbook
 from openpyxl.chart import LineChart, Reference 
@@ -49,8 +50,25 @@ import regex as re
 import shutil
 
 # variables
-DEFAULT_INPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust (rlde,hud)\\Data\\pDR\\new_files"
-DEFAULT_OUTPUT_DIRECTORY = "S:\\ExposureScienceLab\\Lead Dust (rlde,hud)\\Data\\pDR"
+def find_directory(drives, target):
+    for drive in drives:
+        directory = os.path.join(drive, target)
+        if os.path.exists(directory):
+            return directory
+    return None
+
+drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
+targets = ['CHM\\ExposureScienceLab\\Lead Dust (rlde,hud)', 'ExposureScienceLab\\Lead Dust (rlde,hud)', 'Lead Dust (rlde,hud)']
+
+for target in targets:
+    directory = find_directory(drives, target)
+    if directory is None:
+        print(f"Directory '{target}' not found.")
+    else:
+        print(f"Directory found: {directory}")
+
+DEFAULT_INPUT_DIRECTORY = os.path.join(directory, "Data\\pDR\\new_files")
+DEFAULT_OUTPUT_DIRECTORY = os.path.join(directory, "Data\\pDR")
 CUSTOM_HEADERS = ["record", "ug/m3", "Temp", "RHumidity", "AtmoPressure", "Flags", "time", "date"]
 PDR_NUM_DICT = {
     "0115250158": "pdr_1",

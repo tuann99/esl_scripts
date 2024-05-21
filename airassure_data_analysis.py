@@ -47,9 +47,9 @@ def data_formatting(df):
 
     return df_tmp
 
-db = r"S:\ExposureScienceLab\Other\voc_testing\voc_testing.db"
+db = r"S:\ExposureScienceLab\Other\voc_testing\data\voc_testing.db"
 export_dir = r"S:\ExposureScienceLab\Other\voc_testing\other_data"
-wkdir = r"S:\ExposureScienceLab\Other\voc_testing"
+dat_dir = r"S:\ExposureScienceLab\Other\voc_testing\data"
 
 #####################################################################################################################
 #####################################################################################################################
@@ -79,7 +79,7 @@ c = conn.cursor()
 
 # make a check to see if the data is already in the database
 
-for file in os.listdir(wkdir):
+for file in os.listdir(dat_dir):
     # file is formatted as "YYYY_MM_DD_airassure_[afu or baseline]_###.csv"
     if file.endswith(".csv"):
         print(file)
