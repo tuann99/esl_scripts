@@ -177,6 +177,18 @@ PDR_NUM_DICT = {
 }
 
 def pdr_summary_stats(input_directory, output_directory, *args, **kwargs):
+    '''
+    Description:
+        - Function for aa
+
+    Parameters:
+        - input_directory (str) - The path to the directory containing the input files
+        - output_directory (str) - The path to the directory you want the files saved in
+        - kwargs: rlde_flag (str) - True or False for signifying RLDE directories
+
+    Returns:
+        - None
+    '''
     rlde_flag = kwargs.get('rlde_flag', None)
     
     for file in os.listdir(input_directory):
