@@ -204,8 +204,8 @@ def pdr_summary_stats(input_directory, output_directory, *args, **kwargs):
                     os.makedirs(output_folder, exist_ok=True)
 
                     # copy file to correct subject folder
-                    copy = shutil.copy2(file_path, output_folder)
-                    setwd = os.chdir(output_folder)
+                    shutil.copy2(file_path, output_folder)
+                    os.chdir(output_folder)
 
                     # create output file paths
                     output_txt_path = os.path.join(output_folder, file)
@@ -311,9 +311,9 @@ def main():
     
     if args.rlde:
         # if the input/output dirs are still default, change it to the rlde ones
-        args.input_directory = DEFAULT_RLDE_INPUT_DIRECTORY if args.input_directory == default_input_directory else args.input_directory 
-        args.output_directory = DEFAULT_RLDE_OUTPUT_DIRECTORY if args.output_directory == default_output_directory else args.output_directory
-        pdr_summary_stats_rlde(args.input_directory, args.output_directory)
+        # args.input_directory = DEFAULT_RLDE_INPUT_DIRECTORY if args.input_directory == default_input_directory else args.input_directory 
+        # args.output_directory = DEFAULT_RLDE_OUTPUT_DIRECTORY if args.output_directory == default_output_directory else args.output_directory
+        pdr_summary_stats(DEFAULT_RLDE_INPUT_DIRECTORY, DEFAULT_RLDE_OUTPUT_DIRECTORY, rlde_flag=True)
     else:
         pdr_summary_stats(args.input_directory, args.output_directory)
 
