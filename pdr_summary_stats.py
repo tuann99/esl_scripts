@@ -24,10 +24,9 @@
 #    and specifying that the analysis will be for the RLDE project (-r). 
 #
 # Notes:
-#  - Data will be exported to the respective subject folder in the pDR folder.
-#  - If output directory is not specified, then by default the program will output to: "S:\ExposureScienceLab\Lead Dust\Data\pDR"
-#  - If input directory is not specified, then by default the program will look for files in: 
-#    "S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR\\new_files"
+#  - Data will be exported to the respective subject folder in the pDR folder if using script for RLDE.
+#  - If output directory is not specified, then by default the program will export to the output folder in the esl_scripts folder.
+#  - If input directory is not specified, then by default the program will look for files in the input folder in the esl_scripts folder.
 #  - The script will create folders in the output directory specified for each subject ID.
 #  - Typical usage will have the input directory be the new_files folder ("S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR\\new_files") and 
 #    the output directory be the pDR folder ("S:\\ExposureScienceLab\\Lead Dust\\Data\\pDR").
