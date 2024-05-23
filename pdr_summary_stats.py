@@ -176,21 +176,11 @@ PDR_NUM_DICT = {
     "CM21102014": "pdr_9",
 }
 
-def pdr_summary_stats(input_directory, output_directory):
-    '''
-    Description:
-        - This function extracts data from the pDR txt files, calculates summary statistics,
-            and then creates an excel (.xlsx) file with the data, summary stats, and chart.
-        - The function will also remove outliers using the IQR method and the z-score method, and
-            create a new sheet with the data, summary stats, and chart for each method.
-    Parameters:
-        - input_directory: the directory containing the pDR txt files
-        - output_directory: the directory to save the output files to
-    Returns:
-        - None
-    '''
+def pdr_summary_stats(input_directory, output_directory, *args, **kwargs):
+    rlde_flag = kwargs.get('rlde_flag', None)
+    
     for file in os.listdir(input_directory):
-        
+    
         if file.endswith(".txt"):
             
             # first create some file paths and extract some info
@@ -199,12 +189,40 @@ def pdr_summary_stats(input_directory, output_directory):
             base_name = os.path.splitext(os.path.basename(file))[0] # extracting name for xlsx file
             print(f"File name is: {base_name}.")
 
-            # copy file to folder
-            shutil.copy2(file_path, output_directory)
+            if rlde_flag:
+                msg = f"Analyzing for RLDE: {rlde_flag}"
+                print(msg)  
+                subject_match = re.search(r"Subject \d+", base_name) # extracting subject ID. should be in format "Subject #"
+    
+                if subject_match: # check to make sure we got a subject id from the file name
+                    subject_id = subject_match.group(0)
+                    print(f"Subject ID found: {subject_id}.")
+                    
+                    # create a folder for the subject ID if it doesn't exist
+                    output_folder = os.path.join(output_directory, subject_id)
+                    print(f"This is the output folder: {output_folder}")
+                    os.makedirs(output_folder, exist_ok=True)
 
-            # create output file paths
-            output_txt_path = os.path.join(output_directory, file)
-            output_xlsx_path = os.path.join(output_directory, f"{base_name}.xlsx")
+                    # copy file to correct subject folder
+                    copy = shutil.copy2(file_path, output_folder)
+                    setwd = os.chdir(output_folder)
+
+                    # create output file paths
+                    output_txt_path = os.path.join(output_folder, file)
+                    output_xlsx_path = os.path.join(output_folder, f"{base_name}.xlsx")
+                else:
+                    print(f"Unable to find subject ID for {file_path}.")
+                    print(f"File was read as \"{base_name}.\"")
+                    print("Please ensure that the file name contains the subject ID as 'Subject #', where # is the subject number.")
+                    break
+            
+            else:
+                # copy file to folder
+                shutil.copy2(file_path, output_directory)
+
+                # create output file paths
+                output_txt_path = os.path.join(output_directory, file)
+                output_xlsx_path = os.path.join(output_directory, f"{base_name}.xlsx")
 
             # working w the xlsx file
             workbook = Workbook()
@@ -229,40 +247,40 @@ def pdr_summary_stats(input_directory, output_directory):
                         tmp["ug/m3"] = pd.to_numeric(tmp["ug/m3"], errors='coerce')
                         summary_stats = tmp["ug/m3"].describe()
 
-                        # remove outliers using IQR method and save removed outliers to new dataframe
-                        q1 = tmp["ug/m3"].quantile(0.25)
-                        q3 = tmp["ug/m3"].quantile(0.75)
-                        iqr = q3 - q1
-                        outliers_iqr_df = tmp[((tmp["ug/m3"] < (q1 - 1.5 * iqr)) | (tmp["ug/m3"] > (q3 + 1.5 * iqr)))]
-                        tmp_no_outliers_iqr = tmp[~((tmp["ug/m3"] < (q1 - 1.5 * iqr)) | (tmp["ug/m3"] > (q3 + 1.5 * iqr)))]
-                        summary_stats_no_outliers_iqr = tmp_no_outliers_iqr["ug/m3"].describe()
+                        # # remove outliers using IQR method and save removed outliers to new dataframe
+                        # q1 = tmp["ug/m3"].quantile(0.25)
+                        # q3 = tmp["ug/m3"].quantile(0.75)
+                        # iqr = q3 - q1
+                        # outliers_iqr_df = tmp[((tmp["ug/m3"] < (q1 - 1.5 * iqr)) | (tmp["ug/m3"] > (q3 + 1.5 * iqr)))]
+                        # tmp_no_outliers_iqr = tmp[~((tmp["ug/m3"] < (q1 - 1.5 * iqr)) | (tmp["ug/m3"] > (q3 + 1.5 * iqr)))]
+                        # summary_stats_no_outliers_iqr = tmp_no_outliers_iqr["ug/m3"].describe()
 
-                        # remove outliers using z-score method
-                        outliers_zscore_df = tmp[(tmp["ug/m3"] - tmp["ug/m3"].mean()).abs() > (3 * tmp["ug/m3"].std())]
-                        tmp_no_outliers_zscore = tmp[(tmp["ug/m3"] - tmp["ug/m3"].mean()).abs() <= (3 * tmp["ug/m3"].std())]
-                        summary_stats_no_outliers_zscore = tmp_no_outliers_zscore["ug/m3"].describe()
+                        # # remove outliers using z-score method
+                        # outliers_zscore_df = tmp[(tmp["ug/m3"] - tmp["ug/m3"].mean()).abs() > (3 * tmp["ug/m3"].std())]
+                        # tmp_no_outliers_zscore = tmp[(tmp["ug/m3"] - tmp["ug/m3"].mean()).abs() <= (3 * tmp["ug/m3"].std())]
+                        # summary_stats_no_outliers_zscore = tmp_no_outliers_zscore["ug/m3"].describe()
                         
                         # write the data to xlsx file
                         data_sheet = create_sheet_with_headers(workbook, 'Data_raw', CUSTOM_HEADERS)
-                        data_sheet_no_outliers_iqr = create_sheet_with_headers(workbook, 'Data_no_outliers_iqr', CUSTOM_HEADERS)
-                        data_sheet_no_outliers_zscore = create_sheet_with_headers(workbook, 'Data_no_outliers_zscore', CUSTOM_HEADERS)
-                        outliers_sheet_iqr = create_sheet_with_headers(workbook, 'Outliers_iqr', CUSTOM_HEADERS)
-                        outliers_sheet_zscore = create_sheet_with_headers(workbook, 'Outliers_zscore', CUSTOM_HEADERS)
+                        # data_sheet_no_outliers_iqr = create_sheet_with_headers(workbook, 'Data_no_outliers_iqr', CUSTOM_HEADERS)
+                        # data_sheet_no_outliers_zscore = create_sheet_with_headers(workbook, 'Data_no_outliers_zscore', CUSTOM_HEADERS)
+                        # outliers_sheet_iqr = create_sheet_with_headers(workbook, 'Outliers_iqr', CUSTOM_HEADERS)
+                        # outliers_sheet_zscore = create_sheet_with_headers(workbook, 'Outliers_zscore', CUSTOM_HEADERS)
 
                         append_rows_to_sheet(data_sheet, tmp)
-                        append_rows_to_sheet(data_sheet_no_outliers_iqr, tmp_no_outliers_iqr)
-                        append_rows_to_sheet(data_sheet_no_outliers_zscore, tmp_no_outliers_zscore)
-                        append_rows_to_sheet(outliers_sheet_iqr, outliers_iqr_df)
-                        append_rows_to_sheet(outliers_sheet_zscore, outliers_zscore_df)
+                        # append_rows_to_sheet(data_sheet_no_outliers_iqr, tmp_no_outliers_iqr)
+                        # append_rows_to_sheet(data_sheet_no_outliers_zscore, tmp_no_outliers_zscore)
+                        # append_rows_to_sheet(outliers_sheet_iqr, outliers_iqr_df)
+                        # append_rows_to_sheet(outliers_sheet_zscore, outliers_zscore_df)
 
                         summary_sheet = create_summary_sheet(workbook, 'Summary_statistics_raw', summary_stats)
-                        summary_sheet_no_outliers_iqr = create_summary_sheet(workbook, 'Sum_stats_no_outliers_iqr', summary_stats_no_outliers_iqr)
-                        summary_sheet_no_outliers_zscore = create_summary_sheet(workbook, 'Sum_stats_no_outliers_zscore', summary_stats_no_outliers_zscore)
+                        # summary_sheet_no_outliers_iqr = create_summary_sheet(workbook, 'Sum_stats_no_outliers_iqr', summary_stats_no_outliers_iqr)
+                        # summary_sheet_no_outliers_zscore = create_summary_sheet(workbook, 'Sum_stats_no_outliers_zscore', summary_stats_no_outliers_zscore)
                         
                         # create the chart on summary sheet
                         create_chart(data_sheet, tmp, summary_sheet)
-                        create_chart(data_sheet_no_outliers_iqr, tmp_no_outliers_iqr, summary_sheet_no_outliers_iqr)
-                        create_chart(data_sheet_no_outliers_zscore, tmp_no_outliers_zscore, summary_sheet_no_outliers_zscore)
+                        # create_chart(data_sheet_no_outliers_iqr, tmp_no_outliers_iqr, summary_sheet_no_outliers_iqr)
+                        # create_chart(data_sheet_no_outliers_zscore, tmp_no_outliers_zscore, summary_sheet_no_outliers_zscore)
 
                         # remove the default sheet
                         default_sheet = workbook["Sheet"]
@@ -277,92 +295,6 @@ def pdr_summary_stats(input_directory, output_directory):
                 print(f"File \"{file}\" deleted from \"{input_directory}.\"")
             else:
                 print(f"File \"{file}\" is empty. Please check the file and try again.")
-
-def pdr_summary_stats_rlde(input_directory, output_directory):
-    for file in os.listdir(input_directory):
-        if file.endswith(".txt"):
-            
-            # first create some file paths and extract some info
-            file_path = os.path.join(input_directory, file) # create file path
-            print(f"File found at: {file_path}.")
-            base_name = os.path.splitext(os.path.basename(file))[0] # extracting name for xlsx file
-            print(f"File name is: {base_name}.")
-            subject_match = re.search(r"Subject \d+", base_name) # extracting subject ID. should be in format "Subject #"
-            
-            if subject_match: # check to make sure we got a subject id from the file name
-                subject_id = subject_match.group(0)
-                print(f"Subject ID found: {subject_id}.")
-            else:
-                print(f"Unable to find subject ID for {file_path}.")
-                print(f"File was read as \"{base_name}.\"")
-                print("Please ensure that the file name contains the subject ID as 'Subject #', where # is the subject number.")
-                break
-
-            # create a folder for the subject ID if it doesn't exist
-            output_folder = os.path.join(output_directory, subject_id)
-            os.makedirs(output_folder, exist_ok=True)
-
-            # copy file to correct subject folder
-            copy = shutil.copy2(file_path, output_folder)
-            setwd = os.chdir(output_folder)
-
-            # create output file paths
-            output_txt_path = os.path.join(output_folder, file)
-            output_xlsx_path = os.path.join(output_folder, f"{base_name}.xlsx")
-
-            # working w the xlsx file
-            workbook = Workbook()
-
-            # open the file and see if there is a serial number, if so, then go ahead with data extraction
-            with open(output_txt_path, 'r') as z:
-                lines = z.readlines()
-                for line in lines: # parse file for serial number by looking for string after "Serial no.  "
-                    if "Serial no." in line: # if serial number is found, then go ahead with data extraction
-                        serial_num = line.split("Serial no.  \", ")[1].strip().replace('"', '')
-                        print(f"{subject_id} was using: " + PDR_NUM_DICT[serial_num])
-                        tmp = pd.read_csv(file_path, sep=",", skiprows=24, header=None, names=CUSTOM_HEADERS)
-                        tmp["pdr name"] = PDR_NUM_DICT[serial_num]  # add column for pdr name
-                        tmp["time"] = tmp["time"].str.strip()  # Remove leading and trailing whitespace
-                        tmp["date"] = tmp["date"].str.strip()
-                        summary_stats = tmp["ug/m3"].describe() # summary statistics
-
-                        # write thedata to xlsx file in 'Data' sheet
-                        data_sheet = workbook.create_sheet(title='Data') # create sheet for data
-                        data_sheet.append(CUSTOM_HEADERS) # add headers to data sheet
-                        for idx, row in tmp.iterrows():
-                            data_sheet.append(row.tolist())
-
-                        # write the summary statistics to xlsx file in a new sheet
-                        summary_sheet = workbook.create_sheet(title='Summary Statistics') # create sheet for summary statistics
-                        summary_stats_list = summary_stats.reset_index().values.tolist()
-                        for row in summary_stats_list:
-                            summary_sheet.append(row)
-                        
-                        # create the chart on summary sheet
-                        chart = LineChart()
-                        chart.title = "ug/m3 Over Time"
-                        chart.y_axis.title = "ug/m3"
-                        chart.x_axis.title = "Time"
-                        y = Reference(data_sheet, min_col=2, min_row=2, max_col=2, max_row=len(tmp) + 1)
-                        x = Reference(data_sheet, min_col=7, min_row=2, max_row=len(tmp) + 1)
-                        chart.add_data(y, titles_from_data=True)
-                        chart.set_categories(x)
-                        summary_sheet.add_chart(chart, "A10")
-
-                        # remove the default sheet
-                        default_sheet = workbook["Sheet"]
-                        workbook.remove(default_sheet)
-
-                        workbook.save(output_xlsx_path)
-                        print(f"Data and Summary statistics saved to {output_xlsx_path}")
-        
-        # check if output exists and has stuff in it, if so, then delete the file from the new files folder
-        if file in os.listdir(output_folder):
-            if os.path.getsize(output_xlsx_path) > 0:
-                os.remove(file_path)
-                print(f"File \"{file}\" deleted from \"{input_directory}.\"")
-            else:
-                print(f"File {file} is empty. Please check the file and try again.")
 
 def main():
     parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
