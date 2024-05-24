@@ -308,7 +308,7 @@ def pdr_summary_stats(input_directory, output_directory, *args, **kwargs):
                 print(f"File \"{file}\" is empty. Please check the file and try again.")
 
 def main():
-    parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary statistics, and create excel file with data, summary stats, and chart.")
+    parser = argparse.ArgumentParser(description="Extract data from pDR txt files, calculate summary stats, and create excel file with data, summary stats, and chart.")
     script_dir = os.path.dirname(os.path.realpath(__file__))
     default_input_directory = os.path.join(script_dir, "input")
     default_output_directory = os.path.join(script_dir, "output")
